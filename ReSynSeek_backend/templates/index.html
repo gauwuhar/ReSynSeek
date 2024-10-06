@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Онлайн Кинотеатр</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css">
+    <link rel="icon"
+          type="image/ico"
+          href="static/image/favicon.ico">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body id="body">
+
+<!-- навбар -->
+<nav class="navbar navbar-expand-lg fixed-top ">
+    <div class="container">
+        <a class="navbar-brand custom-dark" href="/">Онлайн Кинотеатр</a>
+        <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon" id="nav-toggle-button"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link custom-dark" href="/">На Главную</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link custom-dark" href="{{ url_for('list_movies') }}">Список Фильмов</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link custom-dark" href="{{ url_for('add_movie') }}">Добавить Фильм</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link custom-dark" id="login-btn" href="javascript:void(0);" onclick="showLoginForm()">Админ-Панель</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="py-5"></div>
+<div class="middle">
+</div>
+<section class="py-5" id="works">
+    <div class="container custom-red">
+        <h2 class="bestsell-text">Популярное:</h2>
+        <div class="row" id="hideworks">
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://static.hdrezka.ac/i/2014/12/19/k492cd9773518dq14k87c.jpg" class="card-img-top" alt="">
+                    <div class="card-body">
+                        <h5 class="card-title">Телефонная Будка</h5>
+                        <p class="card-text">Джоэл Шумахер</p>
+                        <p class="card-price">Один телефонный звонок может изменить всю жизнь человека или даже оборвать ее. Герой фильма Стью Шеферд становится пленником телефонной будки.
+
+                            Что вы сделаете, если услышите, как в телефонной будке зазвонил телефон? Скорее всего, инстинктивно поднимете трубку, хотя прекрасно знаете, что кто-то просто ошибся номером. Вот и Стью кажется, что на звонок надо обязательно ответить, а в результате он оказывается втянутым в чудовищную игру. «Только положи трубку, и ты – труп», – говорит ему невидимый собеседник. </p>
+                        <button class="btn custom-blue hover-cart-btn add-to-cart-btn" onclick="window.location.href='list_movies#movie2'">Перейти в Список</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://static.hdrezka.ac/i/2021/3/6/o41759bd352dazn54q16d.jpeg" class="card-img-top" alt="">
+                    <div class="card-body">
+                        <h5 class="card-title">Побег из Шоушенка</h5>
+                        <p class="card-text">Фрэнк Дарабонт</p>
+                        <p class="card-price">Бухгалтер Энди Дюфрейн обвинён в убийстве собственной жены и её любовника. Оказавшись в тюрьме под названием Шоушенк, он сталкивается с жестокостью и беззаконием, царящими по обе стороны решётки. Каждый, кто попадает в эти стены, становится их рабом до конца жизни. Но Энди, обладающий живым умом и доброй душой, находит подход как к заключённым, так и к охранникам, добиваясь их особого к себе расположения. </p>
+                        <button class="btn custom-blue hover-cart-btn add-to-cart-btn" onclick="window.location.href='list_movies#movie1'">Перейти в Список</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://static.hdrezka.ac/i/2022/6/26/w9648805312b9ri89j82f.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Зелёная Миля</h5>
+                        <p class="card-text">Фрэнк Дарабонт</p>
+                        <p class="card-price">Пол Эджкомб - начальник блока смертников в тюрьме «Холодная гора», каждый из узников которого однажды проходит «зеленую милю» по пути к месту казни. Пол повидал много заключённых и надзирателей за время работы. Однако гигант Джон Коффи, обвинённый в страшном преступлении, стал одним из самых необычных обитателей блока. </p>
+                        <button class="btn custom-blue hover-cart-btn add-to-cart-btn" onclick="window.location.href='list_movies#movie3'">Перейти в Список</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="login-form-container">
+
+    <div id="close-login-btn" class="fas fa-times" onclick="closeLoginForm()"></div>
+
+    <form action="/protected" method="post">
+        <h3>Вход в Админ-Панель</h3>
+        <span>Логин:</span>
+        <input type="text" name="username" class="box" placeholder="Введите логин" id="username">
+        <span>Пароль:</span>
+        <input type="password" name="password" class="box" placeholder="Введите пароль" id="password">
+        <input type="submit" value="Login" class="btn" onclick="checkLogin()">
+    </form>
+
+</div>
+
+
+<footer class="py-3 custom-blue footer">
+    <div class="container" id="footer-container">
+        <p>&copy; 2023 IDev. All rights reserved.</p>
+    </div>
+</footer>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/js/bootstrap.min.js"></script>
+<script src="{{url_for('static', filename='js.js') }}"></script>
+</body>
+</html>
