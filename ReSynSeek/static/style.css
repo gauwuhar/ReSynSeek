@@ -1,0 +1,170 @@
+body {
+    font-family: "\BrunoAceSC-Regular";
+    background-color: #002346;
+    height: 1300px;
+    background-image: url("https://img.freepik.com/free-vector/linear-flat-abstract-lines-pattern_23-2148950145.jpg?w=740&t=st=1699541740~exp=1699542340~hmac=c2f1f9ad498f55e1292b5840c6abbc12cd217f510f688bcfd38b1629b911fbbb");
+
+}
+.middle{
+    width: 90%;
+    margin-left: 80px;
+    height: 1300px;
+    background-color: white;
+    opacity: 80%;
+    position: absolute;
+}
+.container{
+    height: 37px;
+}
+
+.navbar {
+    background-color: #002346;
+    overflow: hidden;
+    opacity: 90%;
+}
+
+.navbar a {
+    float: left;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    background-color: #D6BB87;
+    color: black;
+}
+
+#footer-container {
+    margin-top: 10px;
+}
+@font-face {
+    font-family: "BrunoAceSC-Regular";
+    src: url("BrunoAceSC-Regular.ttf");
+}
+.custom-white{
+    color: #E84545;
+    background-color: black;
+}
+.custom-blue{
+    background-color: #1f1f1e;
+    color: white;
+}
+.custom-red{
+    color: black;
+}
+.custom-dark{
+    color: white;
+}
+.hover-cart-btn{
+    background-color: #b37ef8;
+    color: #ffffff;
+}
+#nav-toggle-button{
+    background-color: #E84545;
+}
+
+.footer{
+    position: fixed;
+    top: 90%;
+    width: 100%;
+    background-color: #002346;
+    opacity: 90%;
+}
+.bestsell-text{
+    color: #000000;
+}
+.main{
+    width: 35%;
+    margin: auto;
+    color: #000000;
+}
+.login-form-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:rgba(255,255,255,.9);
+    position:fixed;
+    top:0; right:-105%;
+    z-index: 10000;
+    height:100%;
+    width:100%;
+}
+
+.login-form-container.active{
+    right:0;
+}
+
+.login-form-container form{
+    background:#fff;
+    border:var(--border);
+    width:40rem;
+    padding:2rem;
+    box-shadow: var(--box-shadow);
+    border-radius: .5rem;
+    margin:2rem;
+}
+
+.login-form-container form h3{
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    color:var(--black);
+    text-align: center;
+}
+
+.login-form-container form span{
+    display: block;
+    font-size: 1.5rem;
+    padding-top: 1rem;
+}
+
+.login-form-container form .box{
+    width: 100%;
+    margin:.7rem 0;
+    font-size: 1.6rem;
+    border:var(--border);
+    border-radius: .5rem;
+    padding:1rem 1.2rem;
+    color:var(--black);
+    text-transform: none;
+}
+
+.login-form-container form .checkbox{
+    display:flex;
+    align-items: center;
+    gap:.5rem;
+    padding:1rem 0;
+}
+
+.login-form-container form .checkbox label{
+    font-size: 1.5rem;
+    color:var(--light-color);
+    cursor: pointer;
+}
+
+.login-form-container form .btn{
+    text-align: center;
+    width:100%;
+    margin:1.5rem 0;
+}
+
+.login-form-container form p{
+    padding-top: .8rem;
+    color:var(--light-color);
+    font-size: 1.5rem;
+}
+
+.login-form-container form p a{
+    color:var(--green);
+    text-decoration: underline;
+}
+
+.login-form-container #close-login-btn{
+    position: absolute;
+    top:1.5rem; right:2.5rem;
+    font-size: 5rem;
+    color:var(--black);
+    cursor: pointer;
+}
