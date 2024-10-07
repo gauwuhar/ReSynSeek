@@ -1,0 +1,22 @@
+<div class="page-container">
+  <main>
+    <h1>Scientific Interests</h1>
+    <p>Choose scientific fields which you are interested in</p>
+    <div class="grid-container">
+      @for(data of subjects; track data.id){
+      <div
+        class="grid-item"
+        [ngClass]="{'selected': data.selected}"
+        [ngStyle]="{'background-image': 'url(' + data.url + ')'}">
+        <h2>{{ data.title }}</h2>
+        <input
+          type="checkbox"
+          (change)="toggleSelected(data)"
+          [checked]="data.selected"
+        >
+      </div>
+      }
+    </div>
+    <button class="save-button">Save</button>
+  </main>
+</div>

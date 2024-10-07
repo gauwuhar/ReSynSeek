@@ -1,0 +1,54 @@
+<div class="container">
+
+  <section class="about-me">
+    <h1>About me</h1>
+    <p>{{ aboutMe?.aboutMe }}</p>
+  </section>
+
+  <aside class="sidebar">
+    <div class="section">
+      <h3>Scientific Experience :</h3>
+      <ul>
+        @for (data of aboutMe?.scientificExperience; track aboutMe?.scientificExperience) {
+          <li>{{ data }}</li>
+        }
+      </ul>
+    </div>
+
+    <div class="section">
+      <h3>Job/Internship :</h3>
+      <ul>
+        @for (data of aboutMe?.working; track aboutMe?.working) {
+          <li>{{ data }}</li>
+        }
+      </ul>
+    </div>
+
+    <div class="section">
+      <h3>Education/Skills :</h3>
+      <ul>
+        @for (data of aboutMe?.edSkills; track aboutMe?.edSkills) {
+          <li>{{ data }}</li>
+        }
+      </ul>
+    </div>
+
+    <div class="section">
+      <h3>Contacts :</h3>
+      <ul>
+        @for (data of aboutMe?.contacts; track aboutMe?.contacts) {
+          <li>{{ data }}</li>
+        }
+      </ul>
+    </div>
+  </aside>
+
+  <section class="scientific-interests">
+    <h2>Scientific Interest :</h2>
+    <div class="grid">
+      <div class="grid-item">Medicine</div>
+      <div class="grid-item">Psychology</div>
+      <div class="grid-item">Math</div>
+    </div>
+  </section>
+</div>

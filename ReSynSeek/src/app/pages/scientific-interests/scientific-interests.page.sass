@@ -1,0 +1,112 @@
+.page-container
+  display: flex
+  flex-direction: column
+  align-items: center
+  background-color: #f9f9f9
+
+main
+  max-width: 1200px
+  margin: 50px 0
+  text-align: center
+
+  h1
+    font-size: 32px
+    margin-bottom: 20px
+
+  p
+    color: #95A1BB
+    margin-bottom: 40px
+    font-size: 12px
+
+  .grid-container
+    display: grid
+    grid-template-columns: repeat(3, 1fr)
+    gap: 20px
+    margin-bottom: 50px
+
+    @media (max-width: 900px)
+      grid-template-columns: repeat(2, 1fr)
+
+    @media (max-width: 600px)
+      grid-template-columns: 1fr
+
+    .grid-item
+      width: 300px
+      height: 300px
+      position: relative
+      background-color: #f0f0f0
+      border-radius: 15px
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: center // Centering the content vertically
+      background-size: cover
+      background-position: center
+      text-align: center
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
+      color: white // Ensuring the text is white
+      font-size: 20px
+      overflow: hidden // To ensure the overlay doesn't spill out of the grid item
+
+      // Adding the dark overlay
+      &::before
+        content: ""
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+        background: rgba(0, 0, 0, 0.4) // Adjust the opacity for the darkness
+        z-index: 1 // Ensuring it's below the text and checkboxes
+        border-radius: 15px
+
+      // Applying the green glow and removing the dark overlay when checked
+      &.selected
+        &::before
+          display: none
+
+        h2
+          text-shadow: 0 0 15px #4caf50, 0 0 25px #4caf50, 0 0 35px #4caf50
+
+      h2
+        z-index: 2
+        margin: 0 // Removing margin to centre it perfectly
+
+      input[type="checkbox"]
+        position: absolute
+        bottom: 15px
+        left: 50%
+        transform: translateX(-50%)
+        width: 24px
+        height: 24px
+        appearance: none
+        border: 2px solid #333
+        border-radius: 50%
+        background-color: white
+        z-index: 2
+        cursor: pointer
+
+        // Adding the star when checked
+        &:checked
+          background-color: #4caf50
+          border-color: #4caf50
+
+          &::after
+            content: "★" // Using a star character
+            position: absolute
+            top: 50%
+            left: 50%
+            transform: translate(-50%, -50%)
+            font-size: 16px
+            color: white
+            z-index: 3
+
+.save-button
+  background-color: transparent
+  color: black
+  border: 1px solid black
+  padding: 10px 20px
+  border-radius: 25px // Making the button a bit rounder
+  cursor: pointer
+  font-size: 18px
+  font-weight: bold
