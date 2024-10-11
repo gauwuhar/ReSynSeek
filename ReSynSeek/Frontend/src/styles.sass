@@ -1,3 +1,57 @@
+//Variables
+$primary-text-color: #27272E //цвет основного текста
+$secondary-text-color: #425466 //текст label
+$input-text-color: #7A828A //текст для полей
+$primary-background-text-color: #FFFFFF //основной белый фон
+$secondary-background-color: #EDF2F7 // второстепенный серый фон
+$welcome-background-color: #353945
+$first-type-button-color: #141416
+$checkbox: #BCB3E2
+$white-button-border-color: #777E90
+
+$animation-cube-top: #CCCCCC
+$animation-cube-right: #B0B0B0
+$animation-cube-left: #6C6C6C
+
+$semi-bold: 600
+$medium: 500
+$regular: 400
+
+//Mixins
 
 
+//Extensions
+%button-white
+  border: 0
+  border-radius: 90px
+  background-color: $first-type-button-color
+  color: $primary-background-text-color
+  font-weight: $semi-bold
+  cursor: pointer
 
+%checkbox
+  width: 20px
+  height: 20px
+  border-radius: 4px
+  border-color: $checkbox
+
+%input-gray-background
+  border: 0
+  border-radius: 10px
+  padding: 12px 0 15px 50px
+  background-color: $secondary-background-color
+  color: $secondary-text-color
+
+%ul-none-style
+  list-style-type: none
+
+//Styles
+body
+  color: $primary-text-color
+  line-height: 136%
+
+h1, h2, h3, h4
+  font-weight: $semi-bold
+
+a
+  text-decoration: none

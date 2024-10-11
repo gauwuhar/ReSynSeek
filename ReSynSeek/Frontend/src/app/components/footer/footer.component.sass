@@ -1,0 +1,97 @@
+// Переменные
+$font-family: Arial, sans-serif
+$bg-color-body: #f4f7f6
+$color-header-bg: #ffffff
+$border-color: #e1e1e1
+$color-nav-links: #5a5a5a
+$color-nav-links-hover: #000000
+$color-dropdown-bg: #f9f9f9
+$color-dropdown-border: #dcdcdc
+$color-dropdown-text: #5a5a5a
+$color-dropdown-text-hover: #333
+$color-auth-btn-bg: #6c7381
+$color-auth-btn-hover: rgb(79, 79, 79)
+$color-footer-bg: #f5f7f9
+$color-footer-text: #5a5a5a
+$color-footer-title: #2e2e2e
+$color-footer-subtitle: #2e2e2e
+$color-social-icons: #2e2e2e
+$color-footer-bottom-text: #a5a5a5
+
+// Footer
+.footer 
+  background-color: $color-footer-bg
+  padding: 40px 0
+  text-align: center
+  font-family: $font-family
+  color: $color-footer-text
+
+  &__container 
+    display: flex
+    justify-content: space-between
+    align-items: center
+    max-width: 1100px
+    margin: 0 auto
+    padding: 0 20px
+
+  &__section 
+    flex: 1
+    padding: 0 20px
+
+  &__contact-info 
+    text-align: left
+    margin-left: 0
+
+    .footer__title 
+      margin-bottom: 10px
+      font-size: 24px
+      color: $color-footer-title
+
+    .footer__subtitle 
+      margin: 0
+
+    .footer__text 
+      margin: 5px 0
+      line-height: 1.6
+
+  &__social-media 
+    p 
+      margin-bottom: 10px
+      font-weight: bold
+      font-size: 18px
+      color: $color-footer-subtitle
+
+    &__icons 
+      display: flex
+      flex-direction: column
+      align-items: center
+      gap: 15px
+
+      .social-icons__link 
+        display: inline-block
+        width: 24px
+        height: 24px
+        background-size: contain
+        background-repeat: no-repeat
+        background-position: center
+
+      .social-icons__facebook 
+        background-image: url('../../assets/icons/Facebook.svg')
+
+      .social-icons__linkedin 
+        background-image: url('../../assets/icons/Linkedin.svg')
+
+      .social-icons__twitter 
+        background-image: url('../../assets/icons/Twitter.svg')
+
+      .social-icons__instagram 
+        background-image: url('../../assets/icons/Instagram.svg')
+
+  &__bottom 
+    margin-top: 20px
+    border-top: 1px solid #e0e0e0
+    padding-top: 10px
+
+    .footer__copyright 
+      font-size: 14px
+      color: $color-footer-bottom-text

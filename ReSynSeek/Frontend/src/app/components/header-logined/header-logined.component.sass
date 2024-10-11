@@ -1,0 +1,188 @@
+// Переменные
+$font-family: Arial, sans-serif
+$bg-color-body: #f4f7f6
+$color-header-bg: #ffffff
+$border-color: #e1e1e1
+$color-nav-links: #5a5a5a
+$color-nav-links-hover: #000000
+$color-dropdown-bg: #f9f9f9
+$color-dropdown-border: #dcdcdc
+$color-dropdown-text: #5a5a5a
+$color-dropdown-text-hover: #333
+$color-auth-btn-bg: #6c7381
+$color-auth-btn-hover: rgb(79, 79, 79)
+$color-footer-bg: #f5f7f9
+$color-footer-text: #5a5a5a
+$color-footer-title: #2e2e2e
+$color-footer-subtitle: #2e2e2e
+$color-social-icons: #2e2e2e
+$color-footer-bottom-text: #a5a5a5
+
+// Основные стили
+body 
+  font-family: $font-family
+  margin: 0
+  padding: 0
+  background-color: $bg-color-body
+
+// Header
+.header 
+  background-color: $color-header-bg
+  padding: 10px 60px
+  border-bottom: 1px solid $border-color
+
+  &__navbar 
+    display: flex
+    justify-content: flex-start
+    align-items: center
+
+  &__logo 
+    display: flex
+    align-items: center
+    margin-right: 50px
+
+    .logo__btn 
+      max-width: 150px
+      padding: 10px
+      border-radius: 30px
+      transition: opacity 0.3s ease // Плавный переход
+      content: url('../../assets/icons/logo.svg')
+      &:hover 
+        content: url('../../assets/icons/logo_hover.svg') // Замена иконки при наведении
+
+  &__separator 
+    display: flex
+    align-items: center
+
+  &__nav-links 
+    list-style: none
+    display: flex
+    gap: 25px
+    margin: 0
+    padding: 0
+    border-left: 1px solid $border-color
+    padding-left: 20px
+    height: 40px
+    align-items: center
+
+    .nav-links__item 
+      list-style: none
+
+    .nav-links__link 
+      text-decoration: none
+      color: $color-nav-links
+      font-weight: 500
+      font-size: 18px
+
+      &:hover 
+        color: $color-nav-links-hover
+
+  &__right-section 
+    margin-left: auto
+    display: flex
+    align-items: center
+    gap: 20px
+
+// Dropdown
+.dropdown 
+  position: relative
+
+  &__btn 
+    background-color: transparent
+    color: $color-nav-links
+    font-weight: 500
+    font-size: 18px
+    border: none
+    cursor: pointer
+    display: flex
+    align-items: center
+    gap: 10px
+
+  &__icon 
+    width: 20px
+    height: 20px
+    margin-right: 5px
+    content: url('../../assets/icons/globe.svg')
+
+  &__content 
+    display: none
+    position: absolute
+    background-color: $color-dropdown-bg
+    min-width: 160px
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2)
+    z-index: 1
+    border-radius: 12px // Закругленные углы
+    padding: 10px 0 // Отступы внутри
+    border: 1px solid $color-dropdown-border // Граница
+
+    a 
+      color: $color-dropdown-text
+      padding: 8px 16px
+      text-decoration: none
+      display: flex
+      align-items: center
+      gap: 8px
+
+      &:hover 
+        color: $color-dropdown-text-hover
+
+  &:hover 
+    .dropdown__content 
+      display: block
+
+    .dropdown__btn 
+      color: $color-dropdown-text-hover
+
+/* User Menu */
+.user-logo
+  position: relative
+  cursor: pointer
+
+  &__icon
+    display: inline-block
+    width: 24px
+    height: 24px
+    content: url('../../assets/icons/user-icon.svg')
+
+  .user-menu
+    display: none
+    position: absolute
+    top: 40px
+    right: 0
+    background-color: white
+    border-radius: 10px
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1)
+    width: 200px
+    padding: 15px
+    z-index: 1000
+    text-align: left
+
+    &__username
+      font-size: 22px
+      font-weight: bold
+      margin-bottom: 10px
+
+    &__item
+      display: flex
+      align-items: center
+      padding: 10px 0
+      color: black
+      text-decoration: none
+      font-size: 16px
+
+      &:hover
+        background-color: #f0f0f0
+        border-radius: 5px
+
+    .view-profile-icon
+      width: 20px
+      height: 20px
+      content: url('../../assets/icons/user-icon.svg')
+
+    .signout-icon
+      width: 20px
+      height: 20px
+      content: url('../../assets/icons/signout.svg')
+
+  &--active
+    display: block

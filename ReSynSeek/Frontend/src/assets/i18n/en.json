@@ -1,5 +1,8 @@
 {
   "header": {
     "home": "Home"
+  },
+  "section": {
+    "switchLanguage": "Switch language"
   }
 }

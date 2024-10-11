@@ -1,0 +1,48 @@
+<header class="header">
+    <nav class="header__navbar">
+        <div class="header__logo logo">
+            <a href="#" class="logo__btn"></a>
+        </div> 
+        <div class="header__separator"></div>
+        <ul class="header__nav-links nav-links">
+            <li class="nav-links__item"><a href="#" class="nav-links__link">Home</a></li>
+            <li class="nav-links__item"><a href="#" class="nav-links__link">About Us</a></li>
+            <li class="nav-links__item"><a href="#" class="nav-links__link">Contacts</a></li>
+            <li class="nav-links__item"><a href="#" class="nav-links__link">FAQ</a></li>
+        </ul>
+        <div class="header__right-section">
+            <div class="header__language-selector language-selector">
+                <div class="language-selector__dropdown dropdown">
+                  <button class="dropdown__btn" (click)="toggleDropdown()">
+                    <a href="#" class="dropdown__icon">
+                      <img [src]="languages[selectedLanguage]" alt="{{selectedLanguage}} Flag" class="icon">
+                    </a>
+                    <span class="dropdown__selected-language">{{ selectedLanguage }}</span>
+                    <span class="dropdown__arrow">&#9662;</span>
+                  </button>
+                  <div class="dropdown__content" *ngIf="dropdownOpen">
+                    <a *ngFor="let language of availableLanguages" href="#" class="dropdown__option" (click)="selectLanguage(language)">
+                      <img [src]="languages[language]" alt="{{language}} Flag" class="icon"> {{ language }}
+                    </a>
+                  </div>
+                </div>
+              </div>
+              
+            @if (!isLogin) {
+                <div class="header__auth-buttons auth-buttons">
+                    <button class="auth-buttons__btn">
+                        <span class="auth-buttons__text">Log In</span> 
+                        <span class="auth-buttons__divider">|</span> 
+                        <span class="auth-buttons__text">Sign Up</span>
+                    </button>
+                </div>
+            } @else {
+                <!--if logined-->
+                <div class="header__user-logo user-logo">
+                  <img src="../../assets/icons/user-icon.svg" alt="">
+                </div>
+            }
+        </div>
+    </nav>
+</header>
+

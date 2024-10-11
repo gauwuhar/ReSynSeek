@@ -35,6 +35,7 @@ export class ScientificInterestsPage implements OnInit {
         selected: false,
       }
     ));
+    this.subjects = this.userService.getScientificInterests();
   }
 
   toggleSelected(subject: InnerSubjectModel) {

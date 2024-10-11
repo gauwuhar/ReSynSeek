@@ -1,0 +1,84 @@
+.faq
+  padding: 40px
+  display: flex
+  flex-direction: column
+  align-items: center
+
+  &__title
+    font-size: 32px
+    font-weight: 700
+    margin-bottom: 40px
+
+  &__content
+    display: flex
+    justify-content: space-between
+    width: 60%
+
+  &__questions
+    flex: 1
+    margin-right: 20px
+    display: flex
+    flex-direction: column
+    border: 1px solid #e0e3e7
+    border-radius: 8px
+    overflow: hidden
+
+  &__answers
+    flex: 2
+    display: flex
+    flex-direction: column
+    border: 1px solid #e0e3e7
+    border-radius: 8px
+    overflow: hidden
+
+  &__question
+    padding: 15px 20px
+    display: flex
+    align-items: center
+    cursor: pointer
+    border-bottom: 1px solid #e0e3e7
+    user-select: none
+
+    &:last-child
+      border-bottom: none
+
+  &__toggle
+    display: none
+
+  &__question-label
+    display: flex
+    align-items: center
+    width: 100%
+
+  &__icon
+    margin-right: 10px
+    font-size: 18px
+    width: 20px
+
+  &__icon--plus
+    color: #333
+    display: inline
+
+  &__icon--minus
+    color: gray
+    display: none
+
+  &__toggle:checked + .faq__question-label .faq__icon--plus
+    display: none
+
+  &__toggle:checked + .faq__question-label .faq__icon--minus
+    display: inline
+    color: gray
+
+  &__toggle:checked + .faq__question-label .faq__question-text
+    color: gray // Black when expanded
+
+  &__question-text
+    color: #333
+    text-decoration: none
+    font-size: 16px
+
+  &__answer
+    display: none
+    padding: 15px
+    border-top: 1px solid #e0e3e7

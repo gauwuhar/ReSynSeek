@@ -1,0 +1,73 @@
+//Modules
+@use '../../../styles' as *
+
+//Styles
+.signup
+  max-width: 424px
+  max-height: 779px
+  margin-left: 70px
+  &__intro
+    margin-bottom: 54px
+  &__welcome
+    font-size: 28px
+    margin-bottom: 12px
+  &__paragraph
+    font-size: 16px
+    font-weight: $regular
+  &__language-switcher
+    display: none
+  &__fields-div
+    display: flex
+    flex-direction: column
+    margin-bottom: 30px
+  &__label
+    font-size: 14px
+    color: $secondary-text-color
+    margin-bottom: 8px
+    font-weight: $medium
+  &__input
+    font-size: 15px
+    border-radius: 6px
+    max-height: 46px
+    padding: 14px 16px 16px 16px
+    background-color: $secondary-background-color
+    color: $input-text-color
+    border: 0
+    font-weight: $medium
+  &__password-length
+    font-size: 11px
+    color: $input-text-color
+    font-weight: $regular
+  &__checkbox-block
+    margin-bottom: 50px
+  &__agreement-checkbox
+    @extend %checkbox
+  &__agreement-text
+    width: 424px
+    display: grid
+    grid-template-columns: 30px 394px
+    align-items: start
+  &__agreement-link
+    color: $secondary-text-color
+    font-weight: $semi-bold
+    &:hover
+      color: $input-text-color
+  &__submit-button
+    max-width: 424px
+    width: 100%
+    max-height: 48px
+    height: 48px
+    @extend %button-white
+  &__signin
+    text-align: center
+    margin-top: 60px
+    font-weight: $semi-bold
+  &__signin-text
+    font-size: 14px
+    color: $input-text-color
+  &__signin-link
+    font-size: 14px
+    text-decoration: none
+    color: $primary-text-color
+    &:hover
+      color: $input-text-color
