@@ -91,6 +91,11 @@ def create_article():
 def get_data():
     return jsonify({'message': 'Hello from the backend!'})
 
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({'message': 'Welcome to the Flask API!'})
+
+
 # Запуск всея всего
 if __name__ == '__main__':
     init_db()
