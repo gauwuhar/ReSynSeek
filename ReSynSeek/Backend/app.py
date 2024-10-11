@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
 import sqlite3
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # баба данных пользователей
 def init_db():
@@ -83,6 +85,11 @@ def create_article():
     conn.close()
 
     return jsonify({'message': 'Article created successfully!'}), 201
+
+
+@app.route('/api/data', methods=['GET'])
+def get_data():
+    return jsonify({'message': 'Hello from the backend!'})
 
 # Запуск всея всего
 if __name__ == '__main__':
