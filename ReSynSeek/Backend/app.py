@@ -86,6 +86,21 @@ def create_article():
 
     return jsonify({'message': 'Article created successfully!'}), 201
 
+#Рут для добавления статьи в избранное
+@app.route('/add_fav', methods=['POST'])
+def add_fav():
+    article_id = request.json.get('article_id')
+    if not article_id:
+        return jsonify({"error": "Article ID is required"}), 400
+
+    article = next((a for a in articles if a['id'] == article_id), None)
+    if article and article not in favorites:
+        favorites.append(article)
+        return jsonify({"message": "Article added to favorites"}), 200
+    else:
+        return jsonify({"error": "Article not found or already in favorites"}), 404
+
+
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
