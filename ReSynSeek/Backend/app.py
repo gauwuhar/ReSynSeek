@@ -5,30 +5,36 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
+
+
 # баба данных пользователей
 def init_db():
     conn_users = sqlite3.connect('users.db')
     cursor_users = conn_users.cursor()
     cursor_users.execute('''CREATE TABLE IF NOT EXISTS users (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            user_id INTEGER PRIMARY KEY AUTOINCREMENT,
                             full_name TEXT NOT NULL,
                             email_or_phone TEXT UNIQUE NOT NULL,
-                            password TEXT NOT NULL)''')
+                            password TEXT NOT NULL,
+                            interests INTEGER,
+                            favorites_id INTEGER,
+                            own_projects_id INTEGER)''')
     conn_users.commit()
     conn_users.close()
 
-    # баба данных статей
-    conn_articles = sqlite3.connect('articles.db')
-    cursor_articles = conn_articles.cursor()
-    cursor_articles.execute('''CREATE TABLE IF NOT EXISTS articles (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+    # баба данных проект
+    conn_projects = sqlite3.connect('projects.db')
+    cursor_projects = conn_projects.cursor()
+    cursor_projects.execute('''CREATE TABLE IF NOT EXISTS projects (
+                            project_id INTEGER PRIMARY KEY AUTOINCREMENT,
                             topic TEXT NOT NULL,
                             brief_description TEXT,
-                            authors TEXT,
+                            user_id_ownership INTEGER,
                             keywords TEXT,
-                            vacancies TEXT)''')
-    conn_articles.commit()
-    conn_articles.close()
+                            vacancies TEXT,
+                            image_url)''')
+    conn_projects.commit()
+    conn_projects.close()
 
 # Рут для реги нового пользователя
 @app.route('/register', methods=['POST'])
@@ -68,8 +74,8 @@ def login_user():
         return jsonify({'error': 'Invalid credentials!'}), 401
 
 # Рут для создания новой статьи
-@app.route('/create_article', methods=['POST'])
-def create_article():
+@app.route('/create_project', methods=['POST'])
+def create_project():
     data = request.json
     topic = data.get('topic')
     brief_description = data.get('brief_description')
@@ -77,14 +83,14 @@ def create_article():
     keywords = data.get('keywords')
     vacancies = data.get('vacancies')
 
-    conn = sqlite3.connect('articles.db')
+    conn = sqlite3.connect('projects.db')
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO articles (topic, brief_description, authors, keywords, vacancies) VALUES (?, ?, ?, ?, ?)',
+    cursor.execute('INSERT INTO projects (topic, brief_description, authors, keywords, vacancies) VALUES (?, ?, ?, ?, ?)',
                    (topic, brief_description, authors, keywords, vacancies))
     conn.commit()
     conn.close()
 
-    return jsonify({'message': 'Article created successfully!'}), 201
+    return jsonify({'message': 'project created successfully!'}), 201
 
 
 @app.route('/api/data', methods=['GET'])
@@ -95,6 +101,9 @@ def get_data():
 def home():
     return jsonify({'message': 'Welcome to the Flask API!'})
 
+@app.route('/project_profile', methods=['GET'])
+def project_profile():
+    return jsonify({'message': 'Welcome to the Flask API!'})
 
 # Запуск всея всего
 if __name__ == '__main__':
