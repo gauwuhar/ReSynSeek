@@ -35,8 +35,8 @@ def close_connection(exception):
     if db_projects is not None:
         db_projects.close()
 
-# Инициализация базы данных пользователей и проектов
-def init_db():
+# Инициализация базы данных пользователей
+def init_db_users():
     conn_users = sqlite3.connect('users.db')
     cursor_users = conn_users.cursor()
     cursor_users.execute('''CREATE TABLE IF NOT EXISTS users (
@@ -50,7 +50,8 @@ def init_db():
     conn_users.commit()
     conn_users.close()
 
-    # Инициализация базы данных проектов
+# Инициализация базы данных проектов
+def init_db_projects():
     conn_projects = sqlite3.connect('projects.db')
     cursor_projects = conn_projects.cursor()
     cursor_projects.execute('''CREATE TABLE IF NOT EXISTS projects (
@@ -64,14 +65,28 @@ def init_db():
     conn_projects.commit()
     conn_projects.close()
 
+# Инициализация базы данных favorites
+def init_db_favorites():
+    conn_users = sqlite3.connect('users.db')
+    conn_projects = sqlite3.connect('projects.db')
+    
+    cursor_users = conn_users.cursor()
     cursor_users.execute('''CREATE TABLE IF NOT EXISTS favorites (
                         favorite_id INTEGER PRIMARY KEY AUTOINCREMENT,
                         user_id INTEGER,
                         project_id INTEGER,
                         FOREIGN KEY(user_id) REFERENCES users(user_id),
                         FOREIGN KEY(project_id) REFERENCES projects(project_id))''')
-    conn_projects.commit()
+
+    conn_users.commit()
+    conn_users.close()
     conn_projects.close()
+
+# Инициализация всех баз данных
+def init_db():
+    init_db_users()
+    init_db_projects()
+    init_db_favorites()
 
 
 # Рут для реги нового пользователя
@@ -304,4 +319,4 @@ def project_profile():
 # Запуск всея всего
 if __name__ == '__main__':
     init_db()
-    app.run(debug=True)
+    app.run(debug=False)
