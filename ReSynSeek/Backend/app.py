@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, g, session
 import sqlite3
 from flask_cors import CORS
 
@@ -17,6 +17,13 @@ def get_db_projects():
     if db is None:
         db = g._database_projects = sqlite3.connect('projects.db')
     return db
+
+def get_db_favorites():
+    db = getattr(g, '_database_favorites', None)
+    if db is None:
+        db = g._database_favorites = sqlite3.connect('favorites.db')
+    return db
+
 
 # Закрытие подключения к базе данных
 @app.teardown_appcontext
@@ -143,7 +150,8 @@ def add_fav():
         # Допустим, вы хотите добавлять проект в таблицу favorites
         conn = get_db_users()
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO favorites (user_id, project_id) VALUES (?, ?)', (current_user_id, project_id))
+        user_id = session.get('user_id')  # или используйте JWT токен
+        cursor.execute('INSERT INTO favorites (user_id, project_id) VALUES (?, ?)', (user_id, project_id))
         conn.commit()
         conn.close()
 
