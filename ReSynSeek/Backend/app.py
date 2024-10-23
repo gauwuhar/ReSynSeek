@@ -43,12 +43,13 @@ def register_user():
     full_name = data.get('full_name')
     email_or_phone = data.get('email_or_phone')
     password = data.get('password')
+    scientific_interest = data.get('scientific_interest')
     
     try:
         conn = sqlite3.connect('users.db')
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO users (full_name, email_or_phone, password) VALUES (?, ?, ?)',
-                       (full_name, email_or_phone, password))
+        cursor.execute('INSERT INTO users (full_name, email_or_phone, password, ) VALUES (?, ?, ?)',
+                       (full_name, email_or_phone, password, scientific_interest))
         conn.commit()
         conn.close()
         return jsonify({'message': 'User registered successfully!'}), 201
@@ -106,6 +107,16 @@ def add_fav():
     else:
         return jsonify({"error": "Article not found or already in favorites"}), 404
 
+
+# Эндпоинт для поиска статей
+@app.route('/search_article', methods=['GET'])
+def search_article():
+    query = request.args.get('query', '')
+    result = [article for article in articles if query.lower() in article['title'].lower()]
+    if result:
+        return jsonify(result), 200
+    else:
+        return jsonify({"message": "No articles found"}), 404
 
 
 @app.route('/api/data', methods=['GET'])
