@@ -5,50 +5,78 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-
-
 # баба данных пользователей
 def init_db():
-    conn_users = sqlite3.connect('users.db')
-    cursor_users = conn_users.cursor()
-    cursor_users.execute('''CREATE TABLE IF NOT EXISTS users (
-                            user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                            full_name TEXT NOT NULL,
-                            email_or_phone TEXT UNIQUE NOT NULL,
-                            password TEXT NOT NULL,
-                            interests INTEGER,
-                            favorites_id INTEGER,
-                            own_projects_id INTEGER)''')
-    conn_users.commit()
-    conn_users.close()
+    # Подключение и создание базы данных database.db
+    conn = connect_db()
+    cursor = conn.cursor()
 
-    # баба данных проект
-    conn_projects = sqlite3.connect('projects.db')
-    cursor_projects = conn_projects.cursor()
-    cursor_projects.execute('''CREATE TABLE IF NOT EXISTS projects (
-                            project_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                            topic TEXT NOT NULL,
-                            brief_description TEXT,
-                            user_id_ownership INTEGER,
-                            keywords TEXT,
-                            vacancies TEXT,
-                            image_url)''')
-    conn_projects.commit()
-    conn_projects.close()
+    # Создаем таблицу keywords
+    cursor.execute('''CREATE TABLE IF NOT EXISTS keywords (
+                        keyword_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        title TEXT NOT NULL)''')
+
+    # Создаем таблицу users
+    cursor.execute('''CREATE TABLE IF NOT EXISTS users (
+                        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        full_name TEXT NOT NULL,
+                        email TEXT UNIQUE NOT NULL,
+                        password TEXT NOT NULL,
+                        creation_account_date DATETIME,
+                        interests INTEGER,
+                        favorites_id INTEGER,
+                        own_projects_id INTEGER,
+                        FOREIGN KEY (interests) REFERENCES keywords(keyword_id),
+                        FOREIGN KEY (favorites_id) REFERENCES projects(project_id),
+                        FOREIGN KEY (own_projects_id) REFERENCES projects(project_id))''')
+
+    # Создаем таблицу projects
+    cursor.execute('''CREATE TABLE IF NOT EXISTS projects (
+                        project_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        topic TEXT NOT NULL,
+                        brief_description TEXT,
+                        detailed_description TEXT,
+                        keywords INTEGER,
+                        creation_project_date DATETIME,
+                        image_url TEXT,
+                        user_id_ownership INTEGER,
+                        email TEXT,
+                        phone TEXT,
+                        city_country TEXT,
+                        facebook_link TEXT,
+                        linkedin_link TEXT,
+                        twitter_link TEXT,
+                        instagram_link TEXT,
+                        FOREIGN KEY (user_id_ownership) REFERENCES users(user_id),
+                        FOREIGN KEY (keywords) REFERENCES keywords(keyword_id))''')
+
+    # Создаем таблицу vacancies для хранения списка вакансий
+    cursor.execute('''CREATE TABLE IF NOT EXISTS vacancies (
+                        vacancy_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        project_id INTEGER NOT NULL,
+                        vacancy_name TEXT NOT NULL,
+                        FOREIGN KEY (project_id) REFERENCES projects(project_id))''')
+
+    # Сохраняем изменения и закрываем соединение
+    conn.commit()
+    conn.close()
+
+def connect_db():
+    return sqlite3.connect('database.db')
 
 # Рут для реги нового пользователя
 @app.route('/register', methods=['POST'])
 def register_user():
     data = request.json
     full_name = data.get('full_name')
-    email_or_phone = data.get('email_or_phone')
+    email = data.get('email')
     password = data.get('password')
     
     try:
         conn = sqlite3.connect('users.db')
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO users (full_name, email_or_phone, password) VALUES (?, ?, ?)',
-                       (full_name, email_or_phone, password))
+        cursor.execute('INSERT INTO users (full_name, email, password) VALUES (?, ?, ?)',
+                       (full_name, email, password))
         conn.commit()
         conn.close()
         return jsonify({'message': 'User registered successfully!'}), 201
@@ -59,12 +87,12 @@ def register_user():
 @app.route('/login', methods=['POST'])
 def login_user():
     data = request.json
-    email_or_phone = data.get('email_or_phone')
+    email = data.get('email')
     password = data.get('password')
     
     conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM users WHERE email_or_phone = ? AND password = ?', (email_or_phone, password))
+    cursor.execute('SELECT * FROM users WHERE email = ? AND password = ?', (email, password))
     user = cursor.fetchone()
     conn.close()
 
@@ -106,8 +134,6 @@ def add_fav():
     else:
         return jsonify({"error": "Article not found or already in favorites"}), 404
 
-
-
 @app.route('/api/data', methods=['GET'])
 def get_data():
     return jsonify({'message': 'Hello from the backend!'})
@@ -116,11 +142,97 @@ def get_data():
 def home():
     return jsonify({'message': 'Welcome to the Flask API!'})
 
-@app.route('/project_profile', methods=['GET'])
-def project_profile():
-    return jsonify({'message': 'Welcome to the Flask API!'})
+
+#Рут для просмотра профиля статьи
+@app.route('/project_profile/<int:project_id>', methods=['GET'])
+def get_project_profile(project_id):
+    # Если проект не найден, выводим сообщение
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    # Выполняем запрос для получения проекта по его ID
+    cursor.execute('SELECT * FROM projects WHERE project_id = ?', (project_id,))
+    project = cursor.fetchone()
+
+    conn.close()
+
+    # Если проект не найден
+    if project is None:
+        return jsonify({'message': 'ERROR: Project not found'}), 404
+
+    # Формируем данные проекта в виде словаря
+    project_data = {
+    'id': project[0],
+    'topic': project[1],
+    'brief_description': project[2],
+    'detailed_description': project[3],
+    'keywords': project[4],
+    'creation_project_date': project[5],
+    'image_url': project[6],
+    'user_id_ownership': project[7],
+    'email': project[8],
+    'phone': project[9],
+    'city_country': project[10],
+    'facebook_link': project[11],
+    'linkedin_link': project[12],
+    'twitter_link': project[13],
+    'instagram_link': project[14]
+}
+
+    return jsonify(project_data), 200
+
+
+def fill_db():
+    # Подключаемся к базе данных
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute('DELETE FROM users')
+    cursor.execute('DELETE FROM projects')
+    cursor.execute('DELETE FROM vacancies')
+    cursor.execute('DELETE FROM keywords')
+
+    # Вставляем данные в таблицу keywords
+    keywords_data = [
+        ('Technology',),
+        ('Science',),
+        ('AI',),
+        ('Cybersecurity',)
+    ]
+    cursor.executemany('INSERT INTO keywords (title) VALUES (?)', keywords_data)
+
+    # Вставляем данные в таблицу users
+    users_data = [
+        ('John Doe', 'john.doe@example.com', 'password123', '2023-01-15 10:00:00', 1, 1, 1),
+        ('Jane Smith', 'jane.smith@example.com', 'password456', '2023-02-20 14:30:00', 2, 2, 2),
+        ('Alice Brown', 'alice.brown@example.com', 'password789', '2023-03-05 09:15:00', 3, 1, 2)
+    ]
+    cursor.executemany('INSERT INTO users (full_name, email, password, creation_account_date, interests, favorites_id, own_projects_id) VALUES (?, ?, ?, ?, ?, ?, ?)', users_data)
+
+    # Вставляем данные в таблицу projects
+    projects_data = [
+    (1, 'AI for Good', 'A project focused on using AI for social good.', 'Detailed description for AI for Good', 3, '2023-04-01 11:45:00', 'https://example.com/image1.jpg', 1, 'ai@example.com', '123-456-7890', 'New York, USA', 'https://facebook.com/ai', 'https://linkedin.com/ai', 'https://twitter.com/ai', 'https://instagram.com/ai'),
+    (2, 'Cybersecurity Innovations', 'New techniques to secure digital systems.', 'Detailed description for Cybersecurity Innovations', 4, '2023-05-10 16:00:00', 'https://example.com/image2.jpg', 2, 'security@example.com', '098-765-4321', 'London, UK', 'https://facebook.com/security', 'https://linkedin.com/security', 'https://twitter.com/security', 'https://instagram.com/security')
+    ]
+    cursor.executemany('INSERT INTO projects (project_id, topic, brief_description, detailed_description, keywords, creation_project_date, image_url, user_id_ownership, email, phone, city_country, facebook_link, linkedin_link, twitter_link, instagram_link) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', projects_data)
+
+    # Вставляем данные в таблицу vacancies
+    vacancies_data = [
+        (1, 'AI Engineer'),
+        (1, 'Data Scientist'),
+        (2, 'Cybersecurity Analyst'),
+        (2, 'Penetration Tester')
+    ]
+    cursor.executemany('INSERT INTO vacancies (project_id, vacancy_name) VALUES (?, ?)', vacancies_data)
+
+    # Сохраняем изменения и закрываем соединение
+    conn.commit()
+    conn.close()
+
+
 
 # Запуск всея всего
 if __name__ == '__main__':
     init_db()
+    fill_db()
     app.run(debug=True)
