@@ -1,14 +1,13 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, g, session
 import sqlite3
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
-# баба данных пользователей
+# Инициализация базы данных
 def init_db():
-    # Подключение и создание базы данных database.db
-    conn = connect_db()
+    conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
     # Создаем таблицу keywords
@@ -64,75 +63,132 @@ def init_db():
 def connect_db():
     return sqlite3.connect('database.db')
 
-# Рут для реги нового пользователя
+    # Создаем таблицу users
+    cursor.execute('''CREATE TABLE IF NOT EXISTS users (
+                        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        full_name TEXT NOT NULL,
+                        email TEXT UNIQUE NOT NULL,
+                        password TEXT NOT NULL,
+                        interests INTEGER,
+                        favorites_id INTEGER,
+                        own_projects_id INTEGER,
+                        FOREIGN KEY (interests) REFERENCES keywords(keyword_id),
+                        FOREIGN KEY (favorites_id) REFERENCES projects(project_id),
+                        FOREIGN KEY (own_projects_id) REFERENCES projects(project_id))''')
+
+    # Создаем таблицу projects
+    cursor.execute('''CREATE TABLE IF NOT EXISTS projects (
+                        project_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        topic TEXT NOT NULL,
+                        brief_description TEXT,
+                        keywords INTEGER,
+                        image_url TEXT,
+                        user_id_ownership INTEGER,
+                        email TEXT,
+                        phone TEXT,
+                        city_country TEXT,
+                        facebook_link TEXT,
+                        linkedin_link TEXT,
+                        twitter_link TEXT,
+                        instagram_link TEXT,
+                        FOREIGN KEY (user_id_ownership) REFERENCES users(user_id),
+                        FOREIGN KEY (keywords) REFERENCES keywords(keyword_id))''')
+
+    # Создаем таблицу vacancies для хранения списка вакансий
+    cursor.execute('''CREATE TABLE IF NOT EXISTS vacancies (
+                        vacancy_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        project_id INTEGER NOT NULL,
+                        vacancy_name TEXT NOT NULL,
+                        FOREIGN KEY (project_id) REFERENCES projects(project_id))''')
+
+    conn.commit()
+    conn.close()
+
+# Функция для получения подключения к базе данных
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect('database.db')
+    return db
+
+# Закрытие подключения к базе данных
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
+
+# Регистрация нового пользователя
 @app.route('/register', methods=['POST'])
 def register_user():
     data = request.json
     full_name = data.get('full_name')
     email = data.get('email')
     password = data.get('password')
-    
+    interests = data.get('interests')
+
     try:
-        conn = sqlite3.connect('users.db')
+        conn = get_db()
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO users (full_name, email, password) VALUES (?, ?, ?)',
-                       (full_name, email, password))
+        cursor.execute('INSERT INTO users (full_name, email, password, interests) VALUES (?, ?, ?, ?)',
+                        (full_name, email, password, interests))
         conn.commit()
-        conn.close()
         return jsonify({'message': 'User registered successfully!'}), 201
     except sqlite3.IntegrityError:
         return jsonify({'error': 'User already exists!'}), 409
 
-# Рут для входа пользователя
+# Вход пользователя
 @app.route('/login', methods=['POST'])
 def login_user():
     data = request.json
     email = data.get('email')
     password = data.get('password')
-    
-    conn = sqlite3.connect('users.db')
+
+    conn = get_db()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM users WHERE email = ? AND password = ?', (email, password))
     user = cursor.fetchone()
-    conn.close()
 
     if user:
         return jsonify({'message': 'Login successful!'}), 200
     else:
         return jsonify({'error': 'Invalid credentials!'}), 401
 
-# Рут для создания новой статьи
+# Создание нового проекта
 @app.route('/create_project', methods=['POST'])
 def create_project():
     data = request.json
     topic = data.get('topic')
     brief_description = data.get('brief_description')
-    authors = data.get('authors')
     keywords = data.get('keywords')
-    vacancies = data.get('vacancies')
+    image_url = data.get('image_url')
 
-    conn = sqlite3.connect('projects.db')
+    conn = get_db()
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO projects (topic, brief_description, authors, keywords, vacancies) VALUES (?, ?, ?, ?, ?)',
-                   (topic, brief_description, authors, keywords, vacancies))
+    cursor.execute('INSERT INTO projects (topic, brief_description, keywords, image_url) VALUES (?, ?, ?, ?)',
+                   (topic, brief_description, keywords, image_url))
     conn.commit()
-    conn.close()
+    return jsonify({'message': 'Project created successfully!'}), 201
 
-    return jsonify({'message': 'project created successfully!'}), 201
-
-#Рут для добавления статьи в избранное
+# Эндпоинт для добавления проекта в избранное
 @app.route('/add_fav', methods=['POST'])
 def add_fav():
-    article_id = request.json.get('article_id')
-    if not article_id:
-        return jsonify({"error": "Article ID is required"}), 400
+    project_id = request.json.get('project_id')
+    if not project_id:
+        return jsonify({"error": "Project ID is required"}), 400
 
-    article = next((a for a in articles if a['id'] == article_id), None)
-    if article and article not in favorites:
-        favorites.append(article)
-        return jsonify({"message": "Article added to favorites"}), 200
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM projects WHERE project_id = ?', (project_id,))
+    project = cursor.fetchone()
+
+    if project:
+        user_id = session.get('user_id')
+        cursor.execute('INSERT INTO favorites (user_id, project_id) VALUES (?, ?)', (user_id, project_id))
+        conn.commit()
+        return jsonify({"message": "Project added to favorites"}), 200
     else:
-        return jsonify({"error": "Article not found or already in favorites"}), 404
+        return jsonify({"error": "Project not found"}), 404
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
@@ -236,3 +292,7 @@ if __name__ == '__main__':
     init_db()
     fill_db()
     app.run(debug=True)
+# Запуск приложения
+if __name__ == '__main__':
+    init_db()
+    app.run(debug=False)
