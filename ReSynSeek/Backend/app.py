@@ -1,9 +1,15 @@
 from flask import Flask, request, jsonify, g, session
 import sqlite3
+import uuid
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
+
+# Функция для генерации UUID
+def generate_uuid():
+    return str(uuid.uuid4())
 
 # Инициализация базы данных
 def init_db():
@@ -12,33 +18,33 @@ def init_db():
 
     # Создаем таблицу keywords
     cursor.execute('''CREATE TABLE IF NOT EXISTS keywords (
-                        keyword_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        keyword_id TEXT PRIMARY KEY,
                         title TEXT NOT NULL)''')
 
     # Создаем таблицу users
     cursor.execute('''CREATE TABLE IF NOT EXISTS users (
-                        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        user_id TEXT PRIMARY KEY,
                         full_name TEXT NOT NULL,
                         email TEXT UNIQUE NOT NULL,
                         password TEXT NOT NULL,
                         creation_account_date DATETIME,
-                        interests INTEGER,
-                        favorites_id INTEGER,
-                        own_projects_id INTEGER,
+                        interests TEXT,
+                        favorites_id TEXT,
+                        own_projects_id TEXT,
                         FOREIGN KEY (interests) REFERENCES keywords(keyword_id),
                         FOREIGN KEY (favorites_id) REFERENCES projects(project_id),
                         FOREIGN KEY (own_projects_id) REFERENCES projects(project_id))''')
 
     # Создаем таблицу projects
     cursor.execute('''CREATE TABLE IF NOT EXISTS projects (
-                        project_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        project_id TEXT PRIMARY KEY,
                         topic TEXT NOT NULL,
                         brief_description TEXT,
                         detailed_description TEXT,
-                        keywords INTEGER,
+                        keywords TEXT,
                         creation_project_date DATETIME,
                         image_url TEXT,
-                        user_id_ownership INTEGER,
+                        user_id_ownership TEXT,
                         email TEXT,
                         phone TEXT,
                         city_country TEXT,
@@ -51,8 +57,8 @@ def init_db():
 
     # Создаем таблицу vacancies для хранения списка вакансий
     cursor.execute('''CREATE TABLE IF NOT EXISTS vacancies (
-                        vacancy_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        project_id INTEGER NOT NULL,
+                        vacancy_id TEXT PRIMARY KEY,
+                        project_id TEXT NOT NULL,
                         vacancy_name TEXT NOT NULL,
                         FOREIGN KEY (project_id) REFERENCES projects(project_id))''')
 
@@ -60,49 +66,9 @@ def init_db():
     conn.commit()
     conn.close()
 
+# Функция для подключения к базе данных
 def connect_db():
     return sqlite3.connect('database.db')
-
-    # Создаем таблицу users
-    cursor.execute('''CREATE TABLE IF NOT EXISTS users (
-                        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        full_name TEXT NOT NULL,
-                        email TEXT UNIQUE NOT NULL,
-                        password TEXT NOT NULL,
-                        interests INTEGER,
-                        favorites_id INTEGER,
-                        own_projects_id INTEGER,
-                        FOREIGN KEY (interests) REFERENCES keywords(keyword_id),
-                        FOREIGN KEY (favorites_id) REFERENCES projects(project_id),
-                        FOREIGN KEY (own_projects_id) REFERENCES projects(project_id))''')
-
-    # Создаем таблицу projects
-    cursor.execute('''CREATE TABLE IF NOT EXISTS projects (
-                        project_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        topic TEXT NOT NULL,
-                        brief_description TEXT,
-                        keywords INTEGER,
-                        image_url TEXT,
-                        user_id_ownership INTEGER,
-                        email TEXT,
-                        phone TEXT,
-                        city_country TEXT,
-                        facebook_link TEXT,
-                        linkedin_link TEXT,
-                        twitter_link TEXT,
-                        instagram_link TEXT,
-                        FOREIGN KEY (user_id_ownership) REFERENCES users(user_id),
-                        FOREIGN KEY (keywords) REFERENCES keywords(keyword_id))''')
-
-    # Создаем таблицу vacancies для хранения списка вакансий
-    cursor.execute('''CREATE TABLE IF NOT EXISTS vacancies (
-                        vacancy_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        project_id INTEGER NOT NULL,
-                        vacancy_name TEXT NOT NULL,
-                        FOREIGN KEY (project_id) REFERENCES projects(project_id))''')
-
-    conn.commit()
-    conn.close()
 
 # Функция для получения подключения к базе данных
 def get_db():
@@ -118,41 +84,109 @@ def close_connection(exception):
     if db is not None:
         db.close()
 
-# Регистрация нового пользователя
-@app.route('/register', methods=['POST'])
-def register_user():
-    data = request.json
+def register():
+    data = request.get_json()
     full_name = data.get('full_name')
     email = data.get('email')
     password = data.get('password')
-    interests = data.get('interests')
 
-    try:
-        conn = get_db()
-        cursor = conn.cursor()
-        cursor.execute('INSERT INTO users (full_name, email, password, interests) VALUES (?, ?, ?, ?)',
-                        (full_name, email, password, interests))
-        conn.commit()
-        return jsonify({'message': 'User registered successfully!'}), 201
-    except sqlite3.IntegrityError:
-        return jsonify({'error': 'User already exists!'}), 409
+    if not full_name or not email or not password:
+        return jsonify({"message": "All fields are required!"}), 400
 
-# Вход пользователя
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    # Проверяем, есть ли уже пользователь с таким email
+    cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
+    user = cursor.fetchone()
+    if user:
+        conn.close()
+        return jsonify({"message": "Email already registered!"}), 400
+
+    # Хэшируем пароль перед сохранением
+    hashed_password = generate_password_hash(password)
+
+    # Вставляем нового пользователя в базу данных с зашифрованным паролем
+    cursor.execute('INSERT INTO users (full_name, email, password) VALUES (?, ?, ?)',
+                   (full_name, email, hashed_password))
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "User registered successfully!"}), 201
+
+# API for user login
 @app.route('/login', methods=['POST'])
-def login_user():
-    data = request.json
+def login():
+    data = request.get_json()
     email = data.get('email')
     password = data.get('password')
 
-    conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM users WHERE email = ? AND password = ?', (email, password))
-    user = cursor.fetchone()
+    if not email or not password:
+        return jsonify({"message": "Email and password are required!"}), 400
 
-    if user:
-        return jsonify({'message': 'Login successful!'}), 200
-    else:
-        return jsonify({'error': 'Invalid credentials!'}), 401
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    # Проверяем, существует ли пользователь с таким email
+    cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
+    user = cursor.fetchone()
+    if not user:
+        conn.close()
+        return jsonify({"message": "User not found!"}), 404
+
+    # Проверяем хэшированный пароль
+    stored_password = user[3]  
+    if not check_password_hash(stored_password, password):
+        conn.close()
+        return jsonify({"message": "Incorrect password!"}), 401
+
+    conn.close()
+    return jsonify({"message": "Login successful!"}), 200
+
+@app.route('/users', methods=['GET'])
+def get_users():
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    # Получаем всех пользователей
+    cursor.execute('SELECT * FROM users')
+    users = cursor.fetchall()
+    conn.close()
+
+    # Возвращаем список пользователей в формате JSON
+    return jsonify(users), 200
+
+@app.route('/users/<string:user_id>', methods=['PUT'])
+def update_user(user_id):
+    data = request.get_json()
+    full_name = data.get('full_name')
+    email = data.get('email')
+
+    if not full_name or not email:
+        return jsonify({"message": "All fields are required!"}), 400
+
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    # Обновляем информацию о пользователе по UUID
+    cursor.execute('UPDATE users SET full_name = ?, email = ? WHERE user_id = ?',
+                   (full_name, email, user_id))
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "User updated successfully!"}), 200
+
+@app.route('/users/<string:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    # Удаляем пользователя по ID
+    cursor.execute('DELETE FROM users WHERE user_id = ?', (user_id,))
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "User deleted successfully!"}), 200
 
 # Создание нового проекта
 @app.route('/create_project', methods=['POST'])
