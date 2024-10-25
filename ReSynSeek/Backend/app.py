@@ -109,37 +109,20 @@ def register():
         existing_user = cursor.fetchone()
 
         if existing_user:
+            conn.close()
             return jsonify({'error': 'User already exists!'}), 409
+        
+        # Хэшируем пароль перед сохранением
+        hashed_password = generate_password_hash(password)
 
-        # Если пользователя нет, создаем нового
+        #Вставляем нового пользователя в базу данных с зашифрованным паролем
         cursor.execute('INSERT INTO users (full_name, email, password, interests) VALUES (?, ?, ?, ?)',
-                        (full_name, email, password, interests))
+                        (full_name, email, hashed_password, interests))
         conn.commit()
         return jsonify({'message': 'User registered successfully!'}), 201
     except sqlite3.IntegrityError:
         return jsonify({'error': 'Database error occurred!'}), 500
 
-
-    conn = connect_db()
-    cursor = conn.cursor()
-
-    # Проверяем, есть ли уже пользователь с таким email
-    cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
-    user = cursor.fetchone()
-    if user:
-        conn.close()
-        return jsonify({"message": "Email already registered!"}), 400
-
-    # Хэшируем пароль перед сохранением
-    hashed_password = generate_password_hash(password)
-
-    # Вставляем нового пользователя в базу данных с зашифрованным паролем
-    cursor.execute('INSERT INTO users (full_name, email, password) VALUES (?, ?, ?)',
-                   (full_name, email, hashed_password))
-    conn.commit()
-    conn.close()
-
-    return jsonify({"message": "User registered successfully!"}), 201
 
 # API for user login
 @app.route('/login', methods=['POST'])
