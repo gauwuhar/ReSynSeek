@@ -3,6 +3,7 @@ import sqlite3
 import uuid
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_cors import CORS
+import database as db
 
 app = Flask(__name__)
 CORS(app)
@@ -86,6 +87,7 @@ def get_db():
         db = g._database = sqlite3.connect('database.db')
     return db
 
+
 # Закрытие подключения к базе данных
 @app.teardown_appcontext
 def close_connection(exception):
@@ -93,11 +95,13 @@ def close_connection(exception):
     if db is not None:
         db.close()
 
+
 def register():
     data = request.get_json()
     full_name = data.get('full_name')
     email = data.get('email')
     password = data.get('password')
+    scientific_interest = data.get('scientific_interest')
 
 
     try:
@@ -131,10 +135,12 @@ def login():
     email = data.get('email')
     password = data.get('password')
 
+
     if not email or not password:
         return jsonify({"message": "Email and password are required!"}), 400
 
     conn = connect_db()
+
     cursor = conn.cursor()
 
     # Проверяем, существует ли пользователь с таким email
@@ -223,15 +229,18 @@ def add_fav():
     if not project_id:
         return jsonify({"error": "Project ID is required"}), 400
 
+
     conn = get_db()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM projects WHERE project_id = ?', (project_id,))
     project = cursor.fetchone()
 
     if project:
+
         user_id = session.get('user_id')  # Получаем user_id из сессии
         if not user_id:
             return jsonify({"error": "User is not logged in"}), 401
+
         cursor.execute('INSERT INTO favorites (user_id, project_id) VALUES (?, ?)', (user_id, project_id))
         conn.commit()
         return jsonify({"message": "Project added to favorites"}), 200
@@ -242,6 +251,7 @@ def add_fav():
 @app.route('/api/data', methods=['GET'])
 def get_data():
     return jsonify({'message': 'Hello from the backend!'})
+
 
 @app.route('/', methods=['GET'])
 def home():
@@ -335,8 +345,10 @@ def fill_db():
     conn.close()
 
 
+
 # Запуск всея всего
 if __name__ == '__main__':
+
     init_db()
     fill_db()
     app.run(debug=False)
