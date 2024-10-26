@@ -1,0 +1,58 @@
+<main>
+  <div class="creating-project" id="creating_project_key_info_id">
+    <h2 class="creating-project__title">
+      Create New Project
+    </h2>
+    <div class="creating-project__navigation-steps">
+      <ul class="creating-project__navigation-steps-ul">
+        <li class="creating-project__navigation-step-li ">
+          <div class="creating-project__navigation-step-div__checked creating-project__navigation-step-div__checked-green">
+            <a [routerLink]="['/creating-project-topic-page']" fragment="creating_project_topic_id"></a>
+          </div>
+        </li>
+        <li class="creating-project__navigation-step-li creating-project__navigation-step-li-active">
+          <div>
+            <a [routerLink]="['/creating-project-key-info-page']" fragment="creating_project_key_info_id"><span class="creating-project__navigation-step-span-active">2</span></a>
+          </div>
+        </li>
+        <li class="creating-project__navigation-step-li">
+          <div>
+            <a [routerLink]="['/creating-project-vacancies-page']" fragment="creating_project_vacancies_id">3</a>
+          </div>
+        </li>
+        <li class="creating-project__navigation-step-li">
+          <div>
+            <a [routerLink]="['/creating-project-submit-page']" fragment="creating_project_submit_id">4</a>
+          </div>
+        </li>
+      </ul>
+      <ul class="creating-project__navigation-headers-ul">
+        <li class="creating-project__navigation-headers-li">Topic</li>
+        <li class="creating-project__navigation-headers-li">Key Info</li>
+        <li class="creating-project__navigation-headers-li">Vacancies</li>
+        <li class="creating-project__navigation-headers-li">Submit</li>
+      </ul>
+    </div>
+    <div class="creating-project__body">
+      <div class="creating-project__keywords-section">
+        <div class="creating-project__keywords-section__search">
+          <img src="/assets/search.svg" alt="search icon" class="icon">
+          <input type="text" placeholder="Search for keywords...">
+        </div>
+        <div class="creating-project__keywords-section__keywords" id="buttonContainer" #buttonContainer>
+          <button class="creating-project__keywords-section__keyword-button" (click)="toggleButton($event.target)">Keyword 1</button>
+          <button class="creating-project__keywords-section__keyword-button" (click)="toggleButton($event.target)">Keyword 2</button>
+        </div>
+        <div class="creating-project__keywords-section__clear">
+          <button id="deleteAllButtons" (click)="deleteAllButtons()">x Clear all</button>
+        </div>
+      </div>
+      <div class="creating-project__description-section">
+        <textarea name="detailed-description" placeholder="Detailed description"></textarea>     
+      </div>
+    </div>
+    <div class="creating-project__footer">
+      <button type="submit" class="creating-project__footer__submit-button" [routerLink]="['/creating-project-vacancies-page']" fragment="creating_project_vacancies_id">Next step</button>
+    </div>
+  </div>
+</main>

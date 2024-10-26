@@ -1,0 +1,89 @@
+<section class="project-submit" id="creating_project_submit_id">
+  <h1 class="project-submit__header-h1">Create New Project</h1>
+  <div class="project-submit__wrapper">
+    <div class="project-submit__navigation-steps">
+      <ul class="project-submit__navigation-steps-ul">
+        <li class="project-submit__navigation-step-li">
+          <div class="project-submit__navigation-step-div__checked">
+            <a [routerLink]="['/creating-project-topic-page']" fragment="creating_project_topic_id"></a>
+          </div>
+        </li>
+        <li class="project-submit__navigation-step-li">
+          <div class="project-submit__navigation-step-div__checked">
+            <a [routerLink]="['/creating-project-key-info-page']" fragment="creating_project_key_info_id"></a>
+          </div>
+        </li>
+        <li class="project-submit__navigation-step-li">
+          <div class="project-submit__navigation-step-div__checked">
+            <a [routerLink]="['/creating-project-vacancies-page']" fragment="creating_project_vacancies_id"></a>
+          </div>
+        </li>
+        <li
+          class="project-submit__navigation-step-li project-submit__navigation-step-li-active"
+        >
+          <div>
+            <a [routerLink]="['/creating-project-submit_page']" fragment="creating_project_submit_id">
+              <span class="project-submit__navigation-step-span-active">4</span>
+            </a>
+          </div>
+        </li>
+      </ul>
+      <ul class="project-submit__navigation-headers-ul">
+        <li class="project-submit__navigation-headers-li">Topic</li>
+        <li class="project-submit__navigation-headers-li">Key Info</li>
+        <li class="project-submit__navigation-headers-li">Vacancies</li>
+        <li class="project-submit__navigation-headers-li">Submit</li>
+      </ul>
+    </div>
+
+    <div class="project-submit__project-preview">
+      <div class="project-submit__project-preview-header-div">
+        <h2 class="project-submit__project-preview-header-h2">
+          Project preview
+        </h2>
+      </div>
+
+      <div class="project-submit__project">
+        <div class="project-submit__project-img-div">
+          <img
+            class="project-submit__project-img"
+            src="assets/statue-glitch_2_4x.jpg"
+            alt=""
+          />
+        </div>
+
+        <div class="project-submit__project-info">
+          <div class="project-submit__project-h2-div">
+            <h2 class="project-submit__project-h2">CyberGuard</h2>
+          </div>
+
+          <div class="project-submit__project-discription-div">
+            <p class="project-submit__project-discription">
+              Lorem ipsum odor amet, consectetuer adipiscing elit. Nec commodo
+              aliquet cursus iaculis tempus. Vestibulum praesent donec ligula
+              diam volutpat ultricies ipsum! Quisque euismod sagittis primis
+              tristique ullamcorper bibendum felis penatibus feugiat. Placerat
+              cras praesent mollis.
+            </p>
+          </div>
+
+          <div class="project-submit__project-tags">
+            <div class="project-submit__project-keys-div">
+              <ul class="project-submit__project-keys-ul">
+                <li class="project-submit__project-keys-li">
+                  Machine Learning
+                </li>
+                <li class="project-submit__project-keys-li">Cybersecurity</li>
+              </ul>
+            </div>
+            <div class="project-submit__project-read-div">Read more</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-submit__project-publish">
+      <button class="project-submit__publish-button" type="submit" value="Submit and Publish" [routerLink]="['/project-profile-page']" fragment="project-profile_id" >Submit and Publish</button>
+    </div>
+  </div>
+</section>

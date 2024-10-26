@@ -1,0 +1,191 @@
+@use '../../../../styles' as *
+
+.project-submit
+  max-height: 820px
+  height: 100%
+  width: 100%
+  padding-top: 50px
+  &__wrapper
+    height: 600px
+    width: 1095px
+    margin: auto
+  &__header-h1
+    margin-left: 275px
+    font-size: 32px
+  &__navigation-steps
+    width: 1095px
+    margin-top: 33px
+    padding: 0
+  /*  Поясняю, что будет просиходить ниже, при стилизации списков-бар меню.
+      В одном блоке div__navigation-steps создается два списка ul__navigation-steps-ul для кружочков
+      и ul__navigation-headers-ul для заголовков каждого шага.
+      Подробнее о ul__navigation-steps-ul:
+        внутри каждого li у нас есть div и ссылка <a>. li задает размерность контейнера, которая отталкивает контейнеры друг от друга
+        кружочек создается путем стилизации div. div и <a> имеют одинаковые размеры, чтобы можно было кликать на круг.
+        В активном степе тоже самое, но для дополнительной стилизации используется span. div стилизует внешний круг. span стилизует внутренний круг.
+        Класс &__navigation-step-div__checked отвечает за отображение галочки, если степ пройден. просто переместите этот класс, или удалите где надо.
+      Подробнее о ul__navigation-headers-ul:
+        li также задается размерность, которая отталкивает контейнеры.
+      P.S не трогайте ничего, сломаете. Используйте только то, что нужно. А вам нужно будет только &__navigation-step-li:nth-child(НОМЕР)
+          чтобы задать линии нужным элементам. Для неактивных кружков можете добавить новый класс, по аналогии с &__navigation-step-li-active
+          и задать ему серый цвет  */
+  &__navigation-steps-ul, &__navigation-headers-ul
+    @extend %ul-none-style
+    width: 1095px
+    padding: 0
+    margin: 0
+    display: flex
+    justify-content: center
+    align-items: center
+  &__navigation-step-li
+    width: 216px
+    height: 44px
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    text-align: center
+    div
+      width: 32px
+      height: 32px
+      padding: 0
+      margin: 0
+      display: flex
+      justify-content: center
+      align-items: center
+      flex-direction: column
+      text-align: center
+      border-radius: 50%
+      background-color: $creation-steps-color
+    a
+      width: 32px
+      height: 32px
+      color: $read-more-text-color
+      vertical-align: middle
+      font-size: 16px
+  &__navigation-step-div__checked
+    background-position: center
+    background-repeat: no-repeat
+    background-image: url(../../../../assets/Project-creation-check-mark.svg)
+  &__navigation-step-li:nth-child(1) //здесь начинаются линии, выбор 1 кружочка
+    background-position: right
+    background-repeat: no-repeat
+    background-image: url(../../../../assets/Project-creation-progress-bar.svg)
+  &__navigation-step-li:nth-child(2),
+  &__navigation-step-li:nth-child(3) // выбор 2 и 3 кружочка
+    background-position: right
+    background-repeat: repeat-x
+    background-image: url(../../../../assets/Project-creation-progress-bar.svg)
+  &__navigation-step-li:nth-child(4) // выбор 4 кружочка
+    background-position: left
+    background-repeat: no-repeat
+    background-image: url(../../../../assets/Project-creation-progress-bar.svg)
+  &__navigation-step-li-active
+    div
+      width: 44px
+      height: 44px
+      margin: 0 86px
+      border-radius: 50%
+      border: 2px solid $creation-steps-color
+      background-color: $primary-background-text-color
+    a
+      display: inline-block
+      width: 44px
+      height: 44px
+      display: flex
+      justify-content: center
+      align-items: center
+  &__navigation-step-span-active
+    display: inline-block
+    width: 32px
+    height: 32px
+    display: flex
+    justify-content: center
+    align-items: center
+    border-radius: 50%
+    background-color: $creation-steps-color
+  &__navigation-headers-li
+    width: 216px
+    height: 44px
+    padding: 0
+    margin: 0
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    text-align: center
+    white-space: nowrap
+  &__project-preview
+    margin-top: 45px
+  &__project-preview-header-div
+    margin-bottom: 15px
+  &__project-preview-header-h2
+    font-size: 20px
+  &__project
+    max-height: 270px
+    max-width: 940px
+    height: 100%
+    display: grid
+    grid-template-columns: 480px 460px
+  &__project-img-div
+    max-width: 347px
+    max-height: 270px
+    width: 100%
+    height: 270px
+  &__project-img
+    width: 100%
+    height: 100%
+    border-radius: 20px
+  &__project-info
+    max-height: 270px
+    width: 100%
+    height: 100%
+    padding-top: 20px
+    display: flex
+    flex-direction: column
+  &__project-h2-div
+    margin-bottom: 18px
+  &__project-h2
+    font-size: 24px
+    font-weight: $semi-bold
+  &__project-discription-div
+    font-size: 16px
+  &__project-discription
+    margin: 0
+  &__project-tags
+    display: grid
+    grid-template-columns: 375px 85px
+    grid-template-rows: 100%
+    align-content: end
+    margin-top: auto
+    margin-bottom: 22px
+  &__project-keys-ul
+    padding: 0
+    margin: 0
+  &__project-keys-li
+    @extend %key-word
+    a
+      @extend %key-word-a
+  &__project-read-div
+    font-size: 12px
+    text-transform: uppercase
+    a
+      color: $read-more-text-color
+      font-weight: $medium
+  &__project-publish
+    width: 100%
+    height: 50px
+    margin-top: 55px
+    text-align: center
+  &__publish-button
+    @extend %button-white
+    border: none
+    height: 50px
+    width: 225px
+    color: $secondary-text-color
+    font-weight: $semi-bold
+    background-color: $creation-steps-color
+    &:hover
+      color: #000
+      background-color: #DCFBD4
+      border: none

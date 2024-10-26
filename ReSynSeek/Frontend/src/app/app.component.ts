@@ -1,7 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "./layout/header/header.component";
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -12,12 +11,4 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppComponent {
   title = 'SynSeek';
-
-  http = inject(HttpClient);
-
-  constructor(){
-    this.http.get('This is interceptor').subscribe((res)=>{
-      console.log(res);
-    })
-  }
 }

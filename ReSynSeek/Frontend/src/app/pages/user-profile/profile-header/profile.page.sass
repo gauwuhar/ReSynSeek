@@ -1,0 +1,91 @@
+@use '../../../../styles' as *
+
+$profile-text-color: #777E90
+
+.profile-head
+  margin: 0 auto
+  margin-top: 67px
+  max-width: 1128px
+  max-height: 267px
+  width: 100%
+  height: 100%
+  &__bio
+    max-width: 1077px
+    max-height: 208px
+    width: 100%
+    height: 100%
+    display: flex
+    margin-bottom: 30px
+  &__avatar-div
+    max-width: 200px
+    max-height: 200px
+    width: 100%
+    height: 100%
+    margin-right: 40px
+  &__avatar-img
+    border-radius: 50%
+  &__bio-text-div
+    max-width: 701px
+    max-height: 148px
+    width: 100%
+    height: 100%
+    margin-top: 38px
+    color: $primary-text-color
+  &__name-years-h1
+    font-size: 30px
+    font-weight: &medium
+    margin-bottom: 10px
+  &__paragraph
+    font-size: 15px
+    margin-bottom: 8px
+  &__paragraph-education
+    font-weight: lighter
+    font-size: 18px
+  &__paragraph-email
+    color: $first-type-button-color
+  &__paragraph-location
+    color: $profile-text-color
+  &__update-button-div
+    margin-top: 38px
+  &__update-button
+    max-width: 128px
+    max-height: 39px
+    width: 128px
+    height: 100%
+    @extend %button-black
+    font-size: 13px
+    &:hover
+      background-color: #615E7A
+      color: #D6D5FF
+  &__media-ul, &__info-ul
+    @extend %ul-none-style
+    padding: 0
+  &__media-li, &__info-li
+    display: inline-block
+  &__media-li
+    margin-right: 20px
+  &__media-a
+    width: 20px
+    height: 21px
+  // &__media-facebook
+  &__info-div
+    max-width: 1120px
+    max-height: 26px
+    width: 100%
+    height: 100%
+  &__info-ul
+    padding-left: 70px
+    border-bottom: 1px solid #7A869A
+  &__info-li
+    max-width: 126px
+    width: 100%
+    text-align: center
+  &__info-information
+    border-left: 1px solid #7A869A
+  &__info-my-projects
+    border-left: 1px solid #7A869A
+    border-right: 1px solid #7A869A
+  &__info-following
+    border-right: 1px solid #7A869A
+  &__info-link
+    color: $profile-text-color

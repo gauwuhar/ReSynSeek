@@ -1,17 +1,17 @@
-<header class="header">
+<header class="header"> <!--Этот компонент это хэдэр когда юзер не вошел в свой аккаунт-->
     <nav class="header__navbar">
         <div class="header__logo logo">
-            <a href="#" class="logo__btn"></a>
+            <a [routerLink]="['/main-page']" class="logo__btn"></a>
         </div> 
         <div class="header__separator"></div>
         <ul class="header__nav-links nav-links">
-            <li class="nav-links__item"><a href="#" class="nav-links__link">Home</a></li>
-            <li class="nav-links__item"><a href="#" class="nav-links__link">About Us</a></li>
-            <li class="nav-links__item"><a href="#" class="nav-links__link">Contacts</a></li>
-            <li class="nav-links__item"><a href="#" class="nav-links__link">FAQ</a></li>
+            <!-- <li class="nav-links__item"><a routerLink="" class="nav-links__link">Home</a></li> -->
+            <li class="nav-links__item"><a [routerLink]="['/main-page']" fragment="about-us_id" class="nav-links__link">About Us</a></li>
+            <li class="nav-links__item"><a [routerLink]="['/main-page']" fragment="footer_id" class="nav-links__link">Contacts</a></li>
+            <li class="nav-links__item"><a [routerLink]="['/faq-page']" class="nav-links__link">FAQ</a></li>
         </ul>
         <div class="header__right-section">
-            <div class="header__language-selector language-selector">
+            <!-- <div class="header__language-selector language-selector">
                 <div class="language-selector__dropdown dropdown">
                   <button class="dropdown__btn" (click)="toggleDropdown()">
                     <a href="#" class="dropdown__icon">
@@ -26,11 +26,11 @@
                     </a>
                   </div>
                 </div>
-              </div>
+              </div> -->
               
             @if (!isLogin) {
                 <div class="header__auth-buttons auth-buttons">
-                    <button class="auth-buttons__btn">
+                    <button class="auth-buttons__btn" [routerLink]="['/registration-page']" fragment="welcome-logo_id">
                         <span class="auth-buttons__text">Log In</span> 
                         <span class="auth-buttons__divider">|</span> 
                         <span class="auth-buttons__text">Sign Up</span>
@@ -39,7 +39,7 @@
             } @else {
                 <!--if logined-->
                 <div class="header__user-logo user-logo">
-                  <img src="../../assets/icons/user-icon.svg" alt="">
+                  <img src="/assets/user-icon.svg" alt="">
                 </div>
             }
         </div>

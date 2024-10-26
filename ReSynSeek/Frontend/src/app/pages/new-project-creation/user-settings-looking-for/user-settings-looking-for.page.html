@@ -1,0 +1,179 @@
+<section class="form" id="creating_project_vacancies_id">
+  <h1 class="form__header-h1">Create New Project</h1>
+  <div class="form__wrapper">
+    <div class="form__navigation-steps">
+      <ul class="form__navigation-steps-ul">
+        <li class="form__navigation-step-li">
+          <div
+            class="form__navigation-step-div__checked form__navigation-step-div__checked-green"
+          >
+            <a [routerLink]="['/creating-project-topic-page']" fragment="creating_project_topic_id"></a>
+          </div>
+        </li>
+        <li class="form__navigation-step-li">
+          <div
+            class="form__navigation-step-div__checked form__navigation-step-div__checked-green"
+          >
+            <a [routerLink]="['/creating-project-key-info-page']" fragment="creating_project_key_info_id"></a>
+          </div>
+        </li>
+        <li class="form__navigation-step-li form__navigation-step-li-active">
+          <div>
+            <a [routerLink]="['/creating-project-vacancies-page']" fragment="creating_project_vacancies_id"
+              ><span class="form__navigation-step-span-active">3</span></a
+            >
+          </div>
+        </li>
+        <li class="form__navigation-step-li">
+          <div>
+            <a [routerLink]="['/creating-project-submit_page']" fragment="creating_project_submit_id">4</a>
+          </div>
+        </li>
+      </ul>
+      <ul class="form__navigation-headers-ul">
+        <li class="form__navigation-headers-li">Topic</li>
+        <li class="form__navigation-headers-li">Key Info</li>
+        <li class="form__navigation-headers-li">Vacancies</li>
+        <li class="form__navigation-headers-li">Submit</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="form__info">
+    <div class="form__group">
+      <label class="form__label" for="email">EMAIL</label>
+      <div class="form__input-group">
+        <input
+          class="form__input"
+          type="email"
+          id="email"
+          placeholder="Enter your email address"
+        />
+      </div>
+    </div>
+
+    <div class="form__group">
+      <label class="form__label" for="phone">PHONE</label>
+      <div class="form__input-group">
+        <input
+          class="form__input"
+          type="tel"
+          id="phone"
+          placeholder="Enter your phone number"
+        />
+      </div>
+    </div>
+
+    <div class="form__group">
+      <label class="form__label" for="location">CITY, COUNTRY</label>
+      <div class="form__input-group">
+        <input
+          class="form__input"
+          type="text"
+          id="location"
+          placeholder="Enter your city and country"
+        />
+      </div>
+    </div>
+
+    <div class="form__group">
+      <label class="form__label" for="facebook">FACEBOOK</label>
+      <div class="form__input-group">
+        <span class="form__social-prefix">facebook.com/</span>
+        <input
+          class="form__input"
+          type="text"
+          id="facebook"
+          placeholder="Enter the following part of your Facebook profile link"
+        />
+      </div>
+    </div>
+
+    <div class="form__group">
+      <label class="form__label" for="linkedin">LINKEDIN</label>
+      <div class="form__input-group">
+        <span class="form__social-prefix">linkedin.com/in/</span>
+        <input
+          class="form__input"
+          type="text"
+          id="linkedin"
+          placeholder="Enter the following part of your LinkedIn profile link"
+        />
+      </div>
+    </div>
+
+    <div class="form__group">
+      <label class="form__label" for="twitter">TWITTER</label>
+      <div class="form__input-group">
+        <span class="form__social-prefix">x.com/</span>
+        <input
+          class="form__input"
+          type="text"
+          id="twitter"
+          placeholder="Enter the following part of your Twitter profile link"
+        />
+      </div>
+    </div>
+
+    <div class="form__group">
+      <label class="form__label" for="instagram">INSTAGRAM</label>
+      <div class="form__input-group">
+        <span class="form__social-prefix">instagram.com/</span>
+        <input
+          class="form__input"
+          type="text"
+          id="instagram"
+          placeholder="Enter the following part of your Instagram profile link"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="who" id="who">
+  <h3 class="who__title">Who we are looking for:</h3>
+  <div
+    *ngIf="showKeywordContainer"
+    class="who__container"
+    id="keywordContainer"
+  >
+    <div *ngFor="let keyword of keywords; let i = index" class="who__keyword">
+      <p>
+        {{ keyword }}
+        <span class="who__edit-btn" (click)="editKeyword(i)">&#9998;</span>
+        <span class="who__close-btn" (click)="removeKeyword(i)">&times;</span>
+      </p>
+    </div>
+    <div
+      class="who__add-btn"
+      id="addBtn"
+      (click)="toggleInputContainer()"
+      *ngIf="!showInputContainer"
+    >
+      +
+    </div>
+  </div>
+
+  <div
+    class="who__input-container"
+    id="inputContainer"
+    *ngIf="showInputContainer"
+  >
+    <input
+      class="who__input"
+      type="text"
+      id="keywordInput"
+      placeholder="Who are you looking for"
+      [(ngModel)]="newKeyword"
+    />
+    <button class="who__save-btn" id="saveBtn" (click)="addKeyword()">
+      {{ isEditing ? "Save" : "Add" }}
+    </button>
+  </div>
+
+  <div class="who__clear-all" id="clearAllBtn" (click)="clearAllKeywords()">
+    <span>&times;</span> Clear all
+  </div>
+
+  <button class="who__next-step" [routerLink]="['/creating-project-submit-page']" fragment="creating_project_submit_id">NEXT STEP</button>
+</section>

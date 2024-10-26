@@ -1,0 +1,446 @@
+//Variables
+$primary-text-color: #27272E //цвет основного текста
+$secondary-text-color: #425466 //текст label
+$input-text-color: #7A828A //текст для полей
+$primary-background-text-color: #FFFFFF //основной белый фон
+$secondary-background-color: #EDF2F7 // второстепенный серый фон
+$welcome-background-color: #353945
+$first-type-button-color: #141416
+$checkbox: #BCB3E2
+$white-button-border-color: #777E90
+$key-words-background-color: #D9D9D9
+$read-more-text-color: #000000
+$creation-steps-color: #A2F07B
+
+$animation-cube-top: #CCCCCC
+$animation-cube-right: #B0B0B0
+$animation-cube-left: #6C6C6C
+
+$semi-bold: 600
+$medium: 500
+$regular: 400
+
+//Mixins
+
+
+//Extensions
+%button-black
+  border: 0
+  border-radius: 90px
+  background-color: $first-type-button-color
+  color: $primary-background-text-color
+  font-weight: $semi-bold
+  cursor: pointer
+
+%button-white
+  background-color: $primary-background-text-color
+  border-color: $white-button-border-color
+  border-style: solid
+  border-width: 1px
+  border-radius: 90px
+  color: $white-button-border-color
+  font-weight: $semi-bold
+  cursor: pointer
+
+%checkbox
+  width: 20px
+  height: 20px
+  border-radius: 4px
+  border-color: $checkbox
+
+%input-gray-background
+  border: 0
+  border-radius: 10px
+  padding: 12px 0 15px 50px
+  background-color: $secondary-background-color
+  color: $secondary-text-color
+
+%ul-none-style
+  list-style-type: none
+
+%key-word
+  display: inline-block
+  height: 22px
+  border-radius: 20px
+  margin-right: 5px
+  font-size: 10px
+  background-color: $key-words-background-color
+
+%key-word-a
+  color: $primary-text-color
+  display: inline-block
+  padding-left: 3px
+  padding-right: 3px
+
+//Styles
+body
+  color: $primary-text-color
+  line-height: 136%
+
+h1, h2, h3, h4
+  font-weight: $semi-bold
+
+a
+  text-decoration: none
+  color: $primary-text-color
+//Variables
+$primary-text-color: #27272E //цвет основного текста
+$secondary-text-color: #425466 //текст label
+$input-text-color: #7A828A //текст для полей
+$primary-background-text-color: #FFFFFF //основной белый фон
+$secondary-background-color: #EDF2F7 // второстепенный серый фон
+$welcome-background-color: #353945
+$first-type-button-color: #141416
+$checkbox: #BCB3E2
+$white-button-border-color: #777E90
+$key-words-background-color: #D9D9D9
+$read-more-text-color: #000000
+$creation-steps-color-green: #A2F07B
+$creation-steps-color-grey: #DCDCDC
+
+
+$animation-cube-top: #CCCCCC
+$animation-cube-right: #B0B0B0
+$animation-cube-left: #6C6C6C
+
+$semi-bold: 600
+$medium: 500
+$regular: 400
+
+//Mixins
+
+
+//Extensions
+%button-black
+  border: 0
+  border-radius: 90px
+  background-color: $first-type-button-color
+  color: $primary-background-text-color
+  font-weight: $semi-bold
+  cursor: pointer
+
+%button-white
+  background-color: $primary-background-text-color
+  border-color: $white-button-border-color
+  border-style: solid
+  border-width: 1px
+  border-radius: 90px
+  color: $white-button-border-color
+  font-weight: $semi-bold
+  cursor: pointer
+
+%checkbox
+  width: 20px
+  height: 20px
+  border-radius: 4px
+  border-color: $checkbox
+
+%input-gray-background
+  border: 0
+  border-radius: 10px
+  padding: 12px 0 15px 50px
+  background-color: $secondary-background-color
+  color: $secondary-text-color
+
+%ul-none-style
+  list-style-type: none
+
+%key-word
+  display: inline-block
+  height: 22px
+  border-radius: 20px
+  margin-right: 5px
+  font-size: 10px
+  background-color: $key-words-background-color
+
+%key-word-a
+  color: $primary-text-color
+  display: inline-block
+  padding-left: 3px
+  padding-right: 3px
+
+
+
+
+  
+  
+  
+  
+  // $color-grey: #A2A6B3
+// $color-dark-grey: #363940
+// $color-light-grey: #DCDCDC
+// $color-text: #333
+// $font-size-base: 16px
+// $border-radius: 4px
+// $creation-steps-color-green: #A2F07B
+// $creation-steps-color-grey: #DCDCDC
+
+
+
+// @use '../../../../../styles' as *
+    
+.form
+  margin: 50px 0
+  display: flex
+  flex-direction: column
+  &__header-div
+    width: 800px
+  &__header-h1
+    font-weight: $semi-bold
+    margin-left: 275px
+  &__info
+    margin: auto
+    margin-top: 40px
+  &__wrapper
+    height: auto
+    margin: 0 auto
+  &__header-h1
+    font-size: 32px
+  &__navigation-steps
+    width: 1095px
+    margin-top: 25px
+    padding: 0
+  /*  Поясняю, что будет просиходить ниже, при стилизации списков-бар меню.
+      В одном блоке div__navigation-steps создается два списка ul__navigation-steps-ul для кружочков
+      и ul__navigation-headers-ul для заголовков каждого шага.
+      Подробнее о ul__navigation-steps-ul:
+        внутри каждого li у нас есть div и ссылка <a>. li задает размерность контейнера, которая отталкивает контейнеры друг от друга
+        кружочек создается путем стилизации div. div и <a> имеют одинаковые размеры, чтобы можно было кликать на круг.
+        В активном степе тоже самое, но для дополнительной стилизации используется span. div стилизует внешний круг. span стилизует внутренний круг.
+        Класс &__navigation-step-div__checked отвечает за отображение галочки, если степ пройден. просто переместите этот класс, или удалите где надо.
+      Подробнее о ul__navigation-headers-ul:
+        li также задается размерность, которая отталкивает контейнеры.
+      P.S не трогайте ничего, сломаете. Используйте только то, что нужно. А вам нужно будет только &__navigation-step-li:nth-child(НОМЕР)
+          чтобы задать линии нужным элементам. Для неактивных кружков можете добавить новый класс, по аналогии с &__navigation-step-li-active
+          и задать ему серый цвет  */
+  &__navigation-steps-ul, &__navigation-headers-ul
+    @extend %ul-none-style
+    width: 1095px
+    padding: 0
+    margin: 0
+    display: flex
+    justify-content: center
+    align-items: center
+  &__navigation-step-li
+    width: 216px
+    height: 44px
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    text-align: center
+    div
+      width: 32px
+      height: 32px
+      padding: 0
+      margin: 0
+      display: flex
+      justify-content: center
+      align-items: center
+      border-radius: 50%
+      background-color: $creation-steps-color-grey
+    a
+      color: $read-more-text-color
+      display: inline-block
+      width: 44px
+      height: 44px
+      display: flex
+      justify-content: center
+      align-items: center
+      text-decoration: none
+  &__navigation-step-div__checked
+    background-position: center
+    background-repeat: no-repeat
+    background-image: url('/assets/Project-creation-check-mark.svg')
+  &__navigation-step-div__checked-green
+    background-color: $creation-steps-color-green !important
+  &__navigation-step-li:nth-child(1) 
+    background-position: right
+    background-repeat: no-repeat
+    background-image: url('/assets/Project-creation-progress-bar.svg')
+  &__navigation-step-li:nth-child(2)
+    background-position: right
+    background-repeat: repeat-x
+    background-image: url('/assets/Project-creation-progress-bar.svg')
+  &__navigation-step-li:nth-child(3) 
+    background-position: right
+    background-repeat: repeat-x
+    background-image: url('/assets/Project-creation-progress-bar.svg')
+  &__navigation-step-li:nth-child(4) 
+    background-position: left
+    background-repeat: no-repeat
+    background-image: url('/assets/Project-creation-progress-bar-grey.svg')
+  &__navigation-step-li-active
+    div
+      width: 44px
+      height: 44px
+      margin: 0 86px
+      border-radius: 50%
+      border: 2px solid $creation-steps-color-green
+      background-color: $primary-background-text-color
+    a
+      display: inline-block
+      width: 44px
+      height: 44px
+      display: flex
+      justify-content: center
+      align-items: center
+  &__navigation-step-span-active
+    display: inline-block
+    width: 32px
+    height: 32px
+    display: flex
+    justify-content: center
+    align-items: center
+    border-radius: 50%
+    background-color: $creation-steps-color-green
+  &__navigation-headers-li
+    width: 216px
+    height: 44px
+    padding: 0
+    margin: 0
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    text-align: center
+    white-space: nowrap
+  &__group
+    margin-bottom: 20px
+  &__label
+    display: block
+    font-size: 12px
+    font-weight: $semi-bold
+    margin-bottom: 5px
+    color: #DCDCDC
+
+  &__input-group
+    display: flex
+    align-items: center
+    width: 800px
+    border-radius: 25px
+
+  &__social-prefix
+    margin-right: 2px
+    font-size: 14px
+    font-weight: bold
+    color: $white-button-border-color
+
+  &__input
+    flex: 1
+    padding: 0 10px
+    border: 1px solid #dcdcdc
+    font-size: 16px
+    color: #333
+    border-radius: 20px
+
+    &:focus
+      outline: none
+      border-color: #6c6cff
+
+    &::placeholder
+      color: #999
+      font-size: 14px
+
+.who
+  display: flex
+  flex-direction: column
+  width: 800px
+  margin: 0 auto 150px
+  &__container
+    margin: 0
+    padding: 0
+    display: flex
+    justify-content: start
+    align-items: center
+    max-width: 1000px
+    flex-wrap: wrap
+
+  &__keyword
+    display: inline
+    width: auto
+    background-color: #e0e0e0
+    padding: 0 20px
+    border-radius: 30px
+    margin: 6px 0
+    font-size: 14px
+    cursor: pointer
+    margin-right: 20px
+    white-space: nowrap
+
+    p
+      margin: 10px
+
+    span
+      cursor: pointer
+      display: none
+
+    &:hover
+      width: auto
+      background-color: #333
+      color: white
+
+      span:first-child
+        margin: 0 5px 0 0
+        transform: translateX(-2)
+        display: inline
+      span
+        display: inline
+
+  &__add-btn
+    padding: 2px 8px
+    width: 30px
+    height: 30px
+    background-color: white
+    border-radius: 50%
+    border: 1px solid #e0e0e0
+    font-size: 18px
+    margin: 0 10px
+    cursor: pointer
+
+  &__input-container
+    display: flex
+    margin-top: 10px
+
+  &__input
+    padding: 10px
+    border-radius: 5px
+    border: 1px solid #dcdcdc
+    flex: 1
+
+  &__save-btn
+    padding: 10px 50px
+    background-color: #4f4f5e
+    color: white
+    border: none
+    border-radius: 5px
+    margin-left: 5px
+    cursor: pointer
+
+  &__clear-all
+    
+    width: 10%
+    color: #333
+    font-size: 14px
+    cursor: pointer
+    text-decoration: none
+    margin: 20px 0
+    color: #999
+    &:hover
+      color:$read-more-text-color
+
+    span
+      margin-right: 3px
+
+  &__next-step
+    padding: 10px 20px
+    background-color: #777E90
+    color: white
+    border-radius: 25px
+    text-align: center
+    text-decoration: none
+    font-size: 14px
+    cursor: pointer
+    width: 160px
+    &:hover
+      background-color: #474B55

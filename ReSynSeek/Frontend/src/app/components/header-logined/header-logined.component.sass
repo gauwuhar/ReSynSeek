@@ -30,6 +30,7 @@ body
   background-color: $color-header-bg
   padding: 10px 60px
   border-bottom: 1px solid $border-color
+  height: 93px
 
   &__navbar 
     display: flex
@@ -46,9 +47,9 @@ body
       padding: 10px
       border-radius: 30px
       transition: opacity 0.3s ease // Плавный переход
-      content: url('../../assets/icons/logo.svg')
+      content: url('/assets/logo_new.svg')
       &:hover 
-        content: url('../../assets/icons/logo_hover.svg') // Замена иконки при наведении
+        content: url('/assets/logo_hover.svg') // Замена иконки при наведении
 
   &__separator 
     display: flex
@@ -102,7 +103,7 @@ body
     width: 20px
     height: 20px
     margin-right: 5px
-    content: url('../../assets/icons/globe.svg')
+    content: url('/assets/globe.svg')
 
   &__content 
     display: none
@@ -142,7 +143,7 @@ body
     display: inline-block
     width: 24px
     height: 24px
-    content: url('../../assets/icons/user-icon.svg')
+    content: url('/assets/user-icon.svg')
 
   .user-menu
     display: none
@@ -177,12 +178,12 @@ body
     .view-profile-icon
       width: 20px
       height: 20px
-      content: url('../../assets/icons/user-icon.svg')
+      content: url('/assets/user-icon.svg')
 
     .signout-icon
       width: 20px
       height: 20px
-      content: url('../../assets/icons/signout.svg')
+      content: url('/assets/signout.svg')
 
   &--active
     display: block

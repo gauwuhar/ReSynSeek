@@ -13,50 +13,94 @@ export class UserService {
     return [
       {
         id: '1',
-        title: 'Psychology',
-        url: 'https://www.recordnet.com/gcdn/presto/2021/03/22/NRCD/9d9dd9e4-e84a-402e-ba8f-daa659e6e6c5-PhotoWord_003.JPG'
+        title: 'Project Management',
+        url: '/assets/Project_Management.jpg'
       },
       {
         id: '2',
-        title: 'Minecraft',
-        url: 'https://www.minecraft.net/content/dam/games/minecraft/key-art/Vanilla-PMP_Collection-Carousel-0_Buzzy-Bees_1280x768.jpg'
+        title: 'Applied data analytics',
+        url: '/assets/Applied_data_analytics.jpg'
       },
       {
         id: '3',
-        title: 'Gachi',
-        url: 'https://i1.sndcdn.com/avatars-YxyX81sc0yxz8UN5-49eERw-t240x240.jpg'
+        title: 'Digital public administration',
+        url: '/assets/Digital_public_administration.jpg'
       },
       {
         id: '4',
-        title: 'Linkin Park',
-        url: 'https://townsquare.media/site/366/files/2014/12/Linkin-Park.jpg?w=780&q=75'
+        title: 'Computer Science',
+        url: '/assets/Computer_Science.jpg'
       },
       {
         id: '5',
-        title: 'Anime',
-        url: 'https://m.media-amazon.com/images/S/pv-target-images/c912a1ce1d58e50f37495f640cb61839c7183adb78470593267cabaedf4fd3c8._SX1080_FMjpg_.jpg'
+        title: 'Software Engineering',
+        url: '/assets/Software_Engineering.jpg'
       },
       {
         id: '6',
-        title: 'Dota 2',
-        url: 'https://pikuco.ru/upload/test_stable/406/406d7ecf04c78ac496a3efdf04a353b7.webp'
+        title: 'Big Data Analysis',
+        url: '/assets/Big_Data_Analysis.jpg'
       },
       {
         id: '7',
-        title: 'Україна',
-        url: 'https://ichef.bbci.co.uk/news/976/cpsprodpb/1601E/production/_109224109_ukraine.png'
+        title: 'Media Technologies',
+        url: '/assets/Media_Technologies.jpg'
       },
       {
         id: '8',
-        title: 'AITU',
-        url: 'https://astanait.edu.kz/wp-content/uploads/2020/11/DSC01501-scaled.jpg'
+        title: 'Mathematical and Computational Science',
+        url: '/assets/Mathematical_and_Computational_Science.jpg'
       },
       {
-        id: '8',
-        title: 'The United States of America',
-        url: 'https://i.natgeofe.com/k/57873055-5e16-4eac-add4-c08c8b5f3bd7/united-states-statue-of-liberty_square.jpg'
+        id: '9',
+        title: 'Big Data in Healthcare',
+        url: '/assets/Big_Data_in_Healthcare.jpg'
       },
-
+      {
+        id: '10',
+        title: 'Cybersecurity',
+        url: '/assets/Cybersecurity.jpg'
+      },
+      {
+        id: '11',
+        title: 'Smart Technologies',
+        url: '/assets/Smart_Technologies.jpg'
+      },
+      {
+        id: '12',
+        title: 'Industrial Internet of Things',
+        url: '/assets/Industrial_Internet_of_Things.jpg'
+      },
+      {
+        id: '13',
+        title: 'Electronic Engineering',
+        url: '/assets/Electronic_Engineering.jpg'
+      },
+      {
+        id: '14',
+        title: 'IT Management',
+        url: '/assets/IT_Management.jpg'
+      },
+      {
+        id: '15',
+        title: 'IT Entrepreneurship',
+        url: '/assets/IT_Entrepreneurship.jpg'
+      },
+      {
+        id: '16',
+        title: 'AI Business',
+        url: '/assets/AI_Business.jpg'
+      },
+      {
+        id: '17',
+        title: 'Digital Journalism',
+        url: '/assets/Digital_Journalism.jpg'
+      },
+      {
+        id: '18',
+        title: 'Computer Science and Information Networks',
+        url: '/assets/Computer_Scienc_and_Information_Networks.jpg'
+      },
     ];
   };
 

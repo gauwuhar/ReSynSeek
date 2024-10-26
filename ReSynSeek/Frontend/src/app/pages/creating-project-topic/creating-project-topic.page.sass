@@ -1,0 +1,170 @@
+@use '../../../styles' as *
+main
+  margin: 50px 0 150px
+.creating-project
+  display: flex
+  flex-direction: column
+  &__title
+    margin-left: 275px
+  &__header-h1
+    font-size: 32px
+  &__navigation-steps
+    width: 1095px
+    margin: 25px auto 0 auto  
+    padding: 0
+  &__navigation-steps-ul, &__navigation-headers-ul
+    @extend %ul-none-style
+    width: 1095px
+    padding: 0
+    margin: 0
+    display: flex
+    justify-content: center
+    align-items: center
+  &__navigation-step-li
+    width: 216px
+    height: 44px
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    text-align: center
+    div
+      width: 32px
+      height: 32px
+      padding: 0
+      margin: 0
+      display: flex
+      justify-content: center
+      align-items: center
+      border-radius: 50%
+      background-color: $creation-steps-color-grey
+    a
+      // width: 32px
+      // height: 32px
+      color: $read-more-text-color
+      // vertical-align: middle
+      // font-size: 16px
+      display: inline-block
+      width: 44px
+      height: 44px
+      display: flex
+      justify-content: center
+      align-items: center
+      text-decoration: none
+  // &__navigation-step-div__checked
+  //   background-position: center
+  //   background-repeat: no-repeat
+  //   background-image: url('/assets/Project-creation-check-mark.svg')
+  &__navigation-step-li:nth-child(1) 
+    background-position: right
+    background-repeat: no-repeat
+    background-image: url('/assets/Project-creation-progress-bar-grey.svg')
+  &__navigation-step-li:nth-child(2),
+  &__navigation-step-li:nth-child(3) 
+    background-position: right
+    background-repeat: repeat-x
+    background-image: url('/assets/Project-creation-progress-bar-grey.svg')
+  &__navigation-step-li:nth-child(4) 
+    background-position: left
+    background-repeat: no-repeat
+    background-image: url('/assets/Project-creation-progress-bar-grey.svg')
+  &__navigation-step-li-active
+    div
+      width: 44px
+      height: 44px
+      margin: 0 86px
+      border-radius: 50%
+      border: 2px solid $creation-steps-color-green
+      background-color: $primary-background-text-color
+    a
+      display: inline-block
+      width: 44px
+      height: 44px
+      display: flex
+      justify-content: center
+      align-items: center
+  &__navigation-step-span-active
+    display: inline-block
+    width: 32px
+    height: 32px
+    display: flex
+    justify-content: center
+    align-items: center
+    border-radius: 50%
+    background-color: $creation-steps-color-green
+  &__navigation-headers-li
+    width: 216px
+    height: 44px
+    padding: 0
+    margin: 0
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    text-align: center
+    white-space: nowrap
+  &__body
+    margin-top: 50px
+    margin-left: 290px
+    margin-right: 290px
+    display: flex
+    justify-content: space-between
+    gap: 100px
+    &-topic
+      display: flex
+      flex-direction: column
+      flex: 1
+      gap: 35px
+      width: 473px
+  &__photo
+    width: 446px
+    height: 306px
+    background-color: #777E90
+    flex: 1
+    border-radius: 17px
+  &__footer
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+  &__body-topic-input
+    width: 456px
+    height: 55px
+    font-size: 16px
+    padding-left: 10px
+    border: 2px solid #CAD1E1
+    border-radius: 5px
+  &__body-topic-description
+    width: 456px
+    height: 150px
+    padding: 15px
+    border: 2px solid #CAD1E1
+    border-radius: 5px
+    font-size: 16px
+    color: #5a5a5a 
+    resize: none
+  &__button--choose
+    width: 140px
+    background-color: #ffffff
+    color: #5a5a5a 
+    border: 2px solid rgb(119, 126, 144)
+    border-radius: 20px
+    padding: 8px 15px
+    cursor: pointer
+    font-size: 16px 
+    margin-top: 20px
+    margin-right: 550px
+    &:hover
+      background-color: #DCFBD4
+  &__button--submit
+    width: 140px
+    background-color: rgb(119, 126, 144)
+    color: #ffffff
+    border: none
+    border-radius: 20px
+    cursor: pointer
+    font-size: 16px 
+    margin-top: 20px
+    margin-left: 290px
+    text-transform: uppercase
+    &:hover
+      background-color: #474B55
