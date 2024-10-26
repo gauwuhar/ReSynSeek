@@ -3,11 +3,20 @@ import sqlite3
 import uuid
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_cors import CORS
-import database as db
+from flask_session import Session
+import datetime
+from functools import wraps
 
 app = Flask(__name__)
 CORS(app)
 app.secret_key = 'your_secret_key_here'
+
+# Flask-Session configuration
+app.config['SESSION_TYPE'] = 'filesystem'  # For local development
+app.config['SESSION_PERMANENT'] = False
+app.config['SESSION_USE_SIGNER'] = True  # Ensures cookies are cryptographically signed
+app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(minutes=30)
+Session(app)  # Initialize session management with Flask-Session
 
 # Функция для генерации UUID
 def generate_uuid():
@@ -87,6 +96,14 @@ def get_db():
         db = g._database = sqlite3.connect('database.db')
     return db
 
+# Decorator to protect routes
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get('logged_in'):
+            return jsonify({"message": "Unauthorized access, please login!"}), 401
+        return f(*args, **kwargs)
+    return decorated_function
 
 # Закрытие подключения к базе данных
 @app.teardown_appcontext
@@ -154,9 +171,28 @@ def login():
     if not check_password_hash(stored_password, password):
         conn.close()
         return jsonify({"message": "Incorrect password!"}), 401
+    
+    # Set session data
+    session['user_id'] = user[0]  # Store user_id in session
+    session['logged_in'] = True
+    session.permanent = True  # Make session permanent (expires as per config)
 
     conn.close()
     return jsonify({"message": "Login successful!"}), 200
+
+# User logout, which clears the session
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.clear()  # Clear all session data
+    return jsonify({"message": "Logout successful!"}), 200
+
+# Protect a route with login required
+@app.route('/protected', methods=['GET'])
+def protected():
+    if not session.get('logged_in'):
+        return jsonify({"message": "Unauthorized access, please login!"}), 401
+    return jsonify({"message": "This is a protected route accessible only to logged-in users."})
+
 
 @app.route('/users', methods=['GET'])
 def get_users():
