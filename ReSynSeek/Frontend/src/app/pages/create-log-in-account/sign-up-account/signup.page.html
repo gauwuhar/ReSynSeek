@@ -1,0 +1,75 @@
+<section class="signup">
+
+  <div class="signup__wrapper">
+
+    <div class="signup__intro">
+      <h2 class="signup__welcome">Create your account</h2>
+      <p class="signup__paragraph">It’s free and easy</p>
+    </div>
+
+    <div class="signup__form-wrapper">
+      <form action="" class="signup__form">
+
+        <div class="signup__fields">
+          <div class="signup__fields-div">
+            <label for="name" class="signup__label">
+              Full name
+            </label>
+            <input id="name" class="signup__input" type="name" required placeholder="Name Surname">
+          </div>
+
+          <div class="signup__fields-div">
+            <label for="email" class="signup__label">
+              E-mail or phone number
+            </label>
+            <input id="email" class="signup__input" type="email" required placeholder="Type your e-mail or phone number">
+          </div>
+
+          <div class="signup__fields-div">
+            <label for="password" class="signup__label">
+              Password
+            </label>
+            <input id="password" class="signup__input" type="password" required placeholder="Type your password">
+            <div class="signup__password-length">
+              <span class="signup__password-length-span">Must be 8 characters at least</span>
+            </div>
+          </div>
+
+          <div class="signup__fields-div">
+            <label for="password" class="signup__label">
+              Confirm Password
+            </label>
+            <input id="password" class="signup__input" type="password" required placeholder="Repeat your password">
+          </div>
+
+
+          <div class="signup__checkbox-block">
+            <label for="agreement" class="signup__agreement-text">
+              <input id="agreement" type="checkbox" class="signup__agreement-checkbox" name="agreement with policy" required value="agree">
+              <span>By creating an account means you agree to <a class="signup__agreement-link" href="">Terms and Conditions</a>, and our <a class="signup__agreement-link"  href="">Privacy Policy</a></span>
+            </label>
+          </div>
+
+        </div>
+
+
+
+        <div class="signup__actions">
+          <button class="signup__submit-button" type="submit" value="Sign Up" [routerLink]="['/projects-feed-page']">Sign Up</button>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="signup__signin">
+      <span class="signup__signin-text">
+        Aldready have an account?
+      </span>
+      <a [routerLink]="['/login-page']" fragment="welcome-logo_id" class="signup__signin-link">
+        Log In
+      </a>
+    </div>
+
+  </div>
+
+</section>

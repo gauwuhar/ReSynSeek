@@ -46,9 +46,9 @@ body
       padding: 10px
       border-radius: 30px
       transition: opacity 0.3s ease // Плавный переход
-      content: url('../../assets/icons/logo.svg')
+      content: url('/assets/logo_new.svg')
       &:hover 
-        content: url('../../assets/icons/logo_hover.svg') // Замена иконки при наведении
+        content: url('/assets/logo_hover.svg') // Замена иконки при наведении
 
   &__separator 
     display: flex
@@ -76,6 +76,7 @@ body
 
       &:hover 
         color: $color-nav-links-hover
+        cursor: pointer
 
   &__right-section 
     margin-left: auto
@@ -102,7 +103,7 @@ body
     width: 20px
     height: 20px
     margin-right: 5px
-    content: url('../../assets/icons/globe.svg')
+    content: url('/assets/globe.svg')
 
   &__content 
     display: none

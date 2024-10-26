@@ -8,6 +8,9 @@ $welcome-background-color: #353945
 $first-type-button-color: #141416
 $checkbox: #BCB3E2
 $white-button-border-color: #777E90
+$key-words-background-color: #D9D9D9
+$read-more-text-color: #000000
+$creation-steps-color: #A2F07B
 
 $animation-cube-top: #CCCCCC
 $animation-cube-right: #B0B0B0
@@ -21,11 +24,21 @@ $regular: 400
 
 
 //Extensions
-%button-white
+%button-black
   border: 0
   border-radius: 90px
   background-color: $first-type-button-color
   color: $primary-background-text-color
+  font-weight: $semi-bold
+  cursor: pointer
+
+%button-white
+  background-color: $primary-background-text-color
+  border-color: $white-button-border-color
+  border-style: solid
+  border-width: 1px
+  border-radius: 90px
+  color: $white-button-border-color
   font-weight: $semi-bold
   cursor: pointer
 
@@ -45,6 +58,20 @@ $regular: 400
 %ul-none-style
   list-style-type: none
 
+%key-word
+  display: inline-block
+  height: 22px
+  border-radius: 20px
+  margin-right: 5px
+  font-size: 10px
+  background-color: $key-words-background-color
+
+%key-word-a
+  color: $primary-text-color
+  display: inline-block
+  padding-left: 3px
+  padding-right: 3px
+
 //Styles
 body
   color: $primary-text-color
@@ -55,3 +82,82 @@ h1, h2, h3, h4
 
 a
   text-decoration: none
+  color: $primary-text-color
+//Variables
+$primary-text-color: #27272E //цвет основного текста
+$secondary-text-color: #425466 //текст label
+$input-text-color: #7A828A //текст для полей
+$primary-background-text-color: #FFFFFF //основной белый фон
+$secondary-background-color: #EDF2F7 // второстепенный серый фон
+$welcome-background-color: #353945
+$first-type-button-color: #141416
+$checkbox: #BCB3E2
+$white-button-border-color: #777E90
+$key-words-background-color: #D9D9D9
+$read-more-text-color: #000000
+$creation-steps-color-green: #A2F07B
+$creation-steps-color-grey: #DCDCDC
+
+
+$animation-cube-top: #CCCCCC
+$animation-cube-right: #B0B0B0
+$animation-cube-left: #6C6C6C
+
+$semi-bold: 600
+$medium: 500
+$regular: 400
+
+//Mixins
+
+
+//Extensions
+%button-black
+  border: 0
+  border-radius: 90px
+  background-color: $first-type-button-color
+  color: $primary-background-text-color
+  font-weight: $semi-bold
+  cursor: pointer
+
+%button-white
+  background-color: $primary-background-text-color
+  border-color: $white-button-border-color
+  border-style: solid
+  border-width: 1px
+  border-radius: 90px
+  color: $white-button-border-color
+  font-weight: $semi-bold
+  cursor: pointer
+
+%checkbox
+  width: 20px
+  height: 20px
+  border-radius: 4px
+  border-color: $checkbox
+
+%input-gray-background
+  border: 0
+  border-radius: 10px
+  padding: 12px 0 15px 50px
+  background-color: $secondary-background-color
+  color: $secondary-text-color
+
+%ul-none-style
+  list-style-type: none
+
+%key-word
+  display: inline-block
+  height: 22px
+  border-radius: 20px
+  margin-right: 5px
+  font-size: 10px
+  background-color: $key-words-background-color
+
+%key-word-a
+  color: $primary-text-color
+  display: inline-block
+  padding-left: 3px
+  padding-right: 3px
+
+
+

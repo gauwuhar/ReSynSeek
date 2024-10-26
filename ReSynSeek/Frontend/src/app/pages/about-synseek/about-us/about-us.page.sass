@@ -1,0 +1,95 @@
+@use '../../../../styles' as *
+/* Section Header */
+.section-header 
+    margin: auto
+    height: 200px
+    background-color: #F4F5F6
+    display: flex
+    align-items: center
+    justify-content: center
+    text-align: center
+
+    &__title 
+        color: #182135
+        font-size: 60px
+        font-weight: bold
+
+/* Story and Mission */
+.story, .mission 
+    height: 580px
+    background-color: #FCFCFD
+    display: flex
+    align-items: center
+    justify-content: center
+    margin-bottom: 15px
+
+    &__inner 
+        display: flex
+        align-items: center
+        justify-content: space-between
+        margin: 0 18%
+
+    &__photo, &__img 
+        flex: 0 0 372px
+        height: 100%
+        width: 100%
+
+    &__text 
+        width: 50%
+        text-align: left
+
+    &__title 
+        font-size: 32px
+        color: #182135
+        margin-bottom: 25px
+        font-weight: bold
+
+    &__description 
+        font-size: 16px
+        color: $read-more-text-color
+        line-height: 1.6
+
+/* CTA Button */
+.cta 
+    display: flex
+    justify-content: center
+    height: auto
+    margin-bottom: 30px
+
+    &__inner 
+        display: flex
+        justify-content: center
+        align-items: center
+
+    &__button 
+        @extend %button-black
+        box-sizing: border-box
+        padding: 16px 24px
+        outline: none
+        width: 425px
+        height: 48px
+        line-height: 48px
+        font-size: 16px
+        text-decoration: none
+        display: flex
+        align-items: center
+        justify-content: center
+        vertical-align: middle
+
+        &:focus-visible 
+            border: 1px solid #4c51f9
+            outline: none
+
+        &:hover 
+            box-shadow: 0 7px 14px rgba(65, 132, 144, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08)
+            background-color: #615E7A
+            color: #D6D5FF
+
+        &:active 
+            background-color: #555
+
+        &:disabled 
+            background-color: #eee
+            border-color: #eee
+            color: #444
+            cursor: not-allowed

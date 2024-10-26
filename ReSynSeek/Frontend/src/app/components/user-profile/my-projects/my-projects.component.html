@@ -1,0 +1,36 @@
+<section class="projects" id="my_projects_id">
+  <div class="projects__add">
+    <h2 class="projects__title">My projects:</h2>
+    <button class="projects__add-button" [routerLink]="['/creating-project-topic']">
+      <img src="./assets/i18n/Group.png" alt="" />Add new one
+    </button>
+  </div>
+
+  <section class="project">
+    <div class="project__image">
+      <a [routerLink]="['/project-profile-page']" fragment="project-profile_id"><img src="./assets/i18n/Rectangle.png" alt="CyberGuard Project" /></a>
+    </div>
+    <div class="project__info">
+      <div class="project__header">
+        <h3 class="project__name"><a [routerLink]="['/project-profile-page']" fragment="project-profile_id">CyberGuard</a></h3>
+        <span class="project__participants">12 participants</span>
+      </div>
+      <p class="project__description">
+        Lorem ipsum odor amet, consectetuer adipiscing elit. Nec commodo aliquet
+        cursus iaculis tempus. Vestibulum praesent donec ligula diam volutpat
+        ultricies ipsum! Quisque euismod sagittis primis tristique ullamcorper
+        bibendum felis penatibus feugiat. Placerat cras praesent mollis.
+      </p>
+      <div class="project__footer">
+        <div class="project__tags">
+          <a class="project__tag">Machine Learning</a>
+          <a class="project__tag">Cybersecurity</a>
+        </div>
+        <div class="project__actions">
+          <a [routerLink]="['/creating-project-topic']" class="project__edit">EDIT PROJECT</a>
+          <a href="#" class="project__delete">DELETE PROJECT</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>

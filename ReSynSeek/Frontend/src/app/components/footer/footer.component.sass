@@ -35,7 +35,9 @@ $color-footer-bottom-text: #a5a5a5
     padding: 0 20px
 
   &__section 
-    flex: 1
+    display: flex
+    flex-direction: column
+    // flex: 1
     padding: 0 20px
 
   &__contact-info 
@@ -52,40 +54,30 @@ $color-footer-bottom-text: #a5a5a5
 
     .footer__text 
       margin: 5px 0
-      line-height: 1.6
 
   &__social-media 
     p 
       margin-bottom: 10px
       font-weight: bold
       font-size: 18px
-      color: $color-footer-subtitle
+      color: #3B5266
 
     &__icons 
       display: flex
       flex-direction: column
       align-items: center
-      gap: 15px
+      gap: 20px
 
       .social-icons__link 
         display: inline-block
-        width: 24px
-        height: 24px
-        background-size: contain
-        background-repeat: no-repeat
-        background-position: center
+    
 
-      .social-icons__facebook 
-        background-image: url('../../assets/icons/Facebook.svg')
-
-      .social-icons__linkedin 
-        background-image: url('../../assets/icons/Linkedin.svg')
-
-      .social-icons__twitter 
-        background-image: url('../../assets/icons/Twitter.svg')
-
-      .social-icons__instagram 
-        background-image: url('../../assets/icons/Instagram.svg')
+  &__social-icons
+    align-self: center
+    display: flex
+    flex-direction: column
+    gap: 5px
+    width: 25px
 
   &__bottom 
     margin-top: 20px
@@ -95,3 +87,12 @@ $color-footer-bottom-text: #a5a5a5
     .footer__copyright 
       font-size: 14px
       color: $color-footer-bottom-text
+
+.social-icons__link-facebook-icon
+  content: url('/assets/Facebook.svg')
+.social-icons__link-linkedin-icon
+  content: url('/assets/Linkedin.svg')
+.social-icons__link-twitter-icon
+  content: url('/assets/Twitter.svg')
+.social-icons__link-instagram-icon
+  content: url('/assets/Instagram.svg')

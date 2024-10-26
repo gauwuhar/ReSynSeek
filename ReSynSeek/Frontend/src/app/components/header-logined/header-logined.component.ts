@@ -1,33 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header-logined',
   standalone: true,
+  imports: [RouterModule],
   templateUrl: './header-logined.component.html',
   styleUrls: ['./header-logined.component.sass']
 })
 export class HeaderLoginedComponent {
-  languages: string[] = ["English", "Русский", "Қазақша"];
-  selectedLanguage: string = this.languages[0]; // Default language
-  dropdownActive: boolean = false;
 
-  get languageOptions() {
-    return this.languages.filter(lang => lang !== this.selectedLanguage);
+  @ViewChild('userMenuToggle', { static: true }) userMenuToggle!: ElementRef;
+  @ViewChild('userMenu', { static: true }) userMenu!: ElementRef;
+
+  // Toggle user menu visibility
+  toggleUserMenu(): void {
+    this.userMenu.nativeElement.classList.toggle('user-menu--active');
   }
 
-  selectLanguage(language: string): void {
-    this.selectedLanguage = language;
-    this.dropdownActive = false; // Close dropdown after selection
-  }
-
-  toggleDropdown(): void {
-    this.dropdownActive = !this.dropdownActive;
-  }
-
-  closeDropdown(event: MouseEvent): void {
+  // Listen for clicks outside the menu to close it
+  @HostListener('document:click', ['$event'])
+  closeUserMenu(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-    if (!target.closest('.language-selector__dropdown') && !target.closest('#languageToggle')) {
-      this.dropdownActive = false;
+
+    // Check if the click is outside the toggle and user menu
+    if (!this.userMenuToggle.nativeElement.contains(target) && !this.userMenu.nativeElement.contains(target)) {
+      this.userMenu.nativeElement.classList.remove('user-menu--active');
     }
   }
 }

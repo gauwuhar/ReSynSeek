@@ -4,19 +4,135 @@
     <p>Choose scientific fields which you are interested in</p>
     <div class="grid-container">
       @for(data of subjects; track data.id){
-      <div
-        class="grid-item"
-        [ngClass]="{'selected': data.selected}"
-        [ngStyle]="{'background-image': 'url(' + data.url + ')'}">
-        <h2>{{ data.title }}</h2>
-        <input
-          type="checkbox"
-          (change)="toggleSelected(data)"
-          [checked]="data.selected"
-        >
-      </div>
+        <div class="grid-item" [ngClass]="{'selected': data.selected}" [ngStyle]="{'background-image': 'url(' + data.url + ')'}">
+          <label>
+            <h2>{{ data.title }}</h2>
+            <input type="checkbox" (change)="toggleSelected(data)" [checked]="data.selected">
+          </label>
+        </div>
+
       }
     </div>
     <button class="save-button">Save</button>
   </main>
 </div>
+
+<!-- <body>
+  <div class="page-container">
+      <main>
+          <h1>Scientific Interests</h1>
+          <p>Choose scientific fields which you are interested in</p>
+          <div class="grid-container">
+              <div class="grid-item" style="background-image: url('/assets/Project_Management.jpg');">
+                  <label>
+                      <h2>Project Management</h2>
+                      <input type="checkbox">
+                  </label>
+              </div>
+              <div class="grid-item" style="background-image: url('/assets/Applied_data_analytics.jpg');">
+                  <label>
+                      <h2>Applied Data Analytics</h2>
+                      <input type="checkbox">
+                  </label>
+              </div>
+              <div class="grid-item" style="background-image: url('/assets/Digital_public_administration.jpg');">
+                  <label>
+                      <h2>Digital Public Administration</h2>
+                      <input type="checkbox">
+                  </label>
+              </div>
+              <div class="grid-item" style="background-image: url('/assets/Computer_Science.jpg');">
+                  <label>
+                      <h2>Computer Science</h2>
+                      <input type="checkbox">
+                  </label>
+              </div>
+              <div class="grid-item" style="background-image: url('/assets/Software_Engineering.jpg');">
+                  <label>
+                      <h2>Software Engineering</h2>
+                      <input type="checkbox">
+                  </label>
+              </div>
+              <div class="grid-item" style="background-image: url('/assets/Big_Data_Analysis.jpg');">
+                  <label>
+                      <h2>Big Data Analysis</h2>
+                      <input type="checkbox">
+                  </label>
+              </div>
+              <div class="grid-item" style="background-image: url('/assets/Media_Technologies.jpg');">
+                  <label>
+                      <h2>Media Technologies</h2>
+                      <input type="checkbox">
+                  </label>
+              </div>
+              <div class="grid-item" style="background-image: url('/assets/Mathematical_and_Computational_Science.jpg');">
+                  <label>
+                      <h2>Mathematical and Computational Science</h2>
+                      <input type="checkbox">
+                  </label>
+              </div>
+              <div class="grid-item" style="background-image: url('/assets/Big_Data_in_Healthcare.jpg');">
+                  <label>
+                      <h2>Big Data in Healthcare</h2>
+                      <input type="checkbox">
+                  </label>
+              </div>
+              <div class="grid-item" style="background-image: url('/assets/Cybersecurity.jpg');">
+                  <label>
+                      <h2>Cybersecurity</h2>
+                      <input type="checkbox">
+                  </label>
+              </div>
+              <div class="grid-item" style="background-image: url('/assets/Smart_Technologies.jpg');">
+                  <label>
+                      <h2>Smart Technologies</h2>
+                      <input type="checkbox">
+                  </label>
+              </div>
+              <div class="grid-item" style="background-image: url('/assets/Industrial_Internet_of_Things.jpg');">
+                  <label>
+                      <h2>Industrial Internet of Things</h2>
+                      <input type="checkbox">
+                  </label>
+              </div>
+              <div class="grid-item" style="background-image: url('/assets/Electronic_Engineering.jpg');">
+                  <label>
+                      <h2>Electronic Engineering</h2>
+                      <input type="checkbox">
+                  </label>
+              </div>
+              <div class="grid-item" style="background-image: url('/assets/IT_Management.jpg');">
+                  <label>
+                      <h2>IT Management</h2>
+                      <input type="checkbox">
+                  </label>
+              </div>
+              <div class="grid-item" style="background-image: url('/assets/IT_Entrepreneurship.jpg');">
+                  <label>
+                      <h2>IT Entrepreneurship</h2>
+                      <input type="checkbox">
+                  </label>
+              </div>
+              <div class="grid-item" style="background-image: url('/assets/AI_Business.jpg');">
+                  <label>
+                      <h2>AI Business</h2>
+                      <input type="checkbox">
+                  </label>
+              </div>
+              <div class="grid-item" style="background-image: url('/assets/Digital_Journalism.jpg');">
+                  <label>
+                      <h2>Digital Journalism</h2>
+                      <input type="checkbox">
+                  </label>
+              </div>
+              <div class="grid-item" style="background-image: url('/assets/Computer_Scienc_and_Information_Networks.jpg');">
+                  <label>
+                      <h2>Computer Science and Information Networks</h2>
+                      <input type="checkbox">
+                  </label>
+              </div>
+          </div>
+          <button class="save-button">Save</button>
+      </main>
+  </div>
+</body> -->

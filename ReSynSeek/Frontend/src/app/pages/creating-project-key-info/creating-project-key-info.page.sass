@@ -1,0 +1,222 @@
+$color-grey: #A2A6B3
+$color-dark-grey: #363940
+$color-light-grey: #DCDCDC
+$color-text: #333
+$font-size-base: 16px
+$border-radius: 4px
+
+
+@use '../../../styles' as *
+main
+  margin: 50px 0 150px
+.creating-project
+  display: flex
+  flex-direction: column
+  &__title
+    margin-left: 275px
+  &__header-h1
+    font-size: 32px
+  &__navigation-steps
+    width: 1095px
+    margin: 25px auto 0 auto  
+    padding: 0
+  &__navigation-steps-ul, &__navigation-headers-ul
+    @extend %ul-none-style
+    width: 1095px
+    padding: 0
+    margin: 0
+    display: flex
+    justify-content: center
+    align-items: center
+  &__navigation-step-li
+    width: 216px
+    height: 44px
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    text-align: center
+    div
+      width: 32px
+      height: 32px
+      padding: 0
+      margin: 0
+      display: flex
+      justify-content: center
+      align-items: center
+      border-radius: 50%
+      background-color: $creation-steps-color-grey
+    a
+      color: $read-more-text-color
+      display: inline-block
+      width: 44px
+      height: 44px
+      display: flex
+      justify-content: center
+      align-items: center
+      text-decoration: none
+  &__navigation-step-div__checked
+    background-position: center
+    background-repeat: no-repeat
+    background-image: url('/assets/Project-creation-check-mark.svg')
+  &__navigation-step-div__checked-green
+    background-color: $creation-steps-color-green !important
+  &__navigation-step-li:nth-child(1) 
+    background-position: right
+    background-repeat: no-repeat
+    background-image: url('/assets/Project-creation-progress-bar.svg')
+  &__navigation-step-li:nth-child(2)
+    background-position: right
+    background-repeat: repeat-x
+    background-image: url('/assets/Project-creation-progress-bar.svg')
+  &__navigation-step-li:nth-child(3) 
+    background-position: right
+    background-repeat: repeat-x
+    background-image: url('/assets/Project-creation-progress-bar-grey.svg')
+  &__navigation-step-li:nth-child(4) 
+    background-position: left
+    background-repeat: no-repeat
+    background-image: url('/assets/Project-creation-progress-bar-grey.svg')
+  &__navigation-step-li-active
+    div
+      width: 44px
+      height: 44px
+      margin: 0 86px
+      border-radius: 50%
+      border: 2px solid $creation-steps-color-green
+      background-color: $primary-background-text-color
+    a
+      display: inline-block
+      width: 44px
+      height: 44px
+      display: flex
+      justify-content: center
+      align-items: center
+  &__navigation-step-span-active
+    display: inline-block
+    width: 32px
+    height: 32px
+    display: flex
+    justify-content: center
+    align-items: center
+    border-radius: 50%
+    background-color: $creation-steps-color-green
+  &__navigation-headers-li
+    width: 216px
+    height: 44px
+    padding: 0
+    margin: 0
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    text-align: center
+    white-space: nowrap
+
+  &__title
+    margin-left: 275px
+
+  &__step
+    display: flex
+    justify-content: center
+
+  &__body
+    margin-top: 50px
+    display: flex
+    justify-content: space-between
+    gap: 90px
+
+  &__keywords-section
+    flex: 3
+    display: flex
+    flex-direction: column
+    gap: 30px
+    margin-left: 290px
+
+    &__search
+      display: flex
+      align-items: center
+      background-color: #f5f5f5
+      border-radius: 3px
+      padding: 10px 15px
+      width: 100%
+
+      input[type="text"]
+        border: none
+        outline: none
+        background: none
+        font-size: $font-size-base
+        width: 100%
+        margin-left: 10px
+
+      .icon
+        font-size: 20px
+        color: $color-text
+
+    &__keywords
+      display: flex
+      flex-wrap: wrap
+      gap: 10px
+
+    &__keyword-button
+      background-color: $color-light-grey
+      color: #43454C
+      border: none
+      border-radius: 20px
+      padding: 10px 20px
+      cursor: pointer
+      font-size: $font-size-base
+      width: 145px
+
+      &.active
+        background-color: $color-dark-grey
+        color: #fff
+
+
+    &__clear
+      margin-top: 40px
+
+      button
+        background: none
+        border: none
+        color: $color-grey
+        cursor: pointer
+        font-size: $font-size-base
+        font-weight: 600
+
+        &:hover
+          color: #000000
+
+  &__description-section
+    display: flex
+    flex-basis: 20%
+    flex: 3
+    margin-right: 200px
+
+    textarea
+      width: 70%
+      height: 250px
+      padding: 15px
+      border: 1px solid rgb(218, 217, 217)
+      border-radius: $border-radius
+      font-size: $font-size-base
+      color: $color-text
+      resize: none
+
+  &__footer
+    margin-left: 280px
+    margin-top: 20px
+
+    &__submit-button
+      width: 140px
+      background-color: #777E90
+      color: #fff
+      border: none
+      border-radius: 20px
+      padding: 10px 20px
+      font-size: $font-size-base
+      cursor: pointer
+      text-transform: uppercase
+
+      &:hover
+        background-color: #474B55
