@@ -101,7 +101,7 @@ def register():
     full_name = data.get('full_name')
     email = data.get('email')
     password = data.get('password')
-    scientific_interest = data.get('scientific_interest')
+    interests = data.get('interests')
 
 
     try:
