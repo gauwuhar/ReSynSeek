@@ -95,14 +95,13 @@ def close_connection(exception):
     if db is not None:
         db.close()
 
-
+@app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
     full_name = data.get('full_name')
     email = data.get('email')
     password = data.get('password')
     interests = data.get('interests')
-
 
     try:
         conn = get_db()
