@@ -3,36 +3,40 @@ import sqlite3
 import uuid
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_cors import CORS
-from flask_session import Session
+from flask_sqlalchemy import SQLAlchemy
 import datetime
 from functools import wraps
+import jwt  
 
 app = Flask(__name__)
+app.secret_key = 'c05c4797799366e4c8bc970755345cbba58236ba83befa05c00a7f54d2dc8c12'
 CORS(app)
-app.secret_key = 'your_secret_key_here'
 
-# Flask-Session configuration
-app.config['SESSION_TYPE'] = 'filesystem'  # For local development
-app.config['SESSION_PERMANENT'] = False
-app.config['SESSION_USE_SIGNER'] = True  # Ensures cookies are cryptographically signed
+# Configuration for sessions and database
+app.config['JWT_SECRET_KEY'] = 'c05c4797799366e4c8bc970755345cbba58236ba83befa05c00a7f54d2dc8c12'
+app.config['SESSION_TYPE'] = 'sqlalchemy'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(minutes=30)
-Session(app)  # Initialize session management with Flask-Session
 
-# Функция для генерации UUID
+# Initialize SQLAlchemy
+db = SQLAlchemy(app)
+
+# Function to generate UUID
 def generate_uuid():
     return str(uuid.uuid4())
 
-# Инициализация базы данных
+# Initialize database
 def init_db():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
-    # Создаем таблицу keywords
+    # Create keywords table
     cursor.execute('''CREATE TABLE IF NOT EXISTS keywords (
                         keyword_id TEXT PRIMARY KEY,
                         title TEXT NOT NULL)''')
 
-    # Создаем таблицу users
+    # Create users table
     cursor.execute('''CREATE TABLE IF NOT EXISTS users (
                         user_id TEXT PRIMARY KEY,
                         full_name TEXT NOT NULL,
@@ -46,7 +50,7 @@ def init_db():
                         FOREIGN KEY (favorites_id) REFERENCES projects(project_id),
                         FOREIGN KEY (own_projects_id) REFERENCES projects(project_id))''')
 
-    # Создаем таблицу projects
+    # Create projects table
     cursor.execute('''CREATE TABLE IF NOT EXISTS projects (
                         project_id TEXT PRIMARY KEY,
                         topic TEXT NOT NULL,
@@ -66,30 +70,38 @@ def init_db():
                         FOREIGN KEY (user_id_ownership) REFERENCES users(user_id),
                         FOREIGN KEY (keywords) REFERENCES keywords(keyword_id))''')
 
-    # Создаем таблицу vacancies для хранения списка вакансий
+    # Create vacancies table
     cursor.execute('''CREATE TABLE IF NOT EXISTS vacancies (
                         vacancy_id TEXT PRIMARY KEY,
                         project_id TEXT NOT NULL,
                         vacancy_name TEXT NOT NULL,
                         FOREIGN KEY (project_id) REFERENCES projects(project_id))''')
-    
+
+    # Create favorites table
     cursor.execute('''CREATE TABLE IF NOT EXISTS favorites (
-                    favorite_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    user_id INTEGER,
-                    project_id INTEGER,
-                    FOREIGN KEY (user_id) REFERENCES users(user_id),
-                    FOREIGN KEY (project_id) REFERENCES projects(project_id))''')
+                        favorite_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        user_id INTEGER,
+                        project_id INTEGER,
+                        FOREIGN KEY (user_id) REFERENCES users(user_id),
+                        FOREIGN KEY (project_id) REFERENCES projects(project_id))''')
 
+    # Create sessions table
+    cursor.execute('''CREATE TABLE IF NOT EXISTS sessions (
+                        session_id TEXT PRIMARY KEY,
+                        user_id TEXT,
+                        created_at DATETIME,
+                        expires_at DATETIME,
+                        FOREIGN KEY (user_id) REFERENCES users(user_id))''')
 
-    # Сохраняем изменения и закрываем соединение
+    # Commit changes and close connection
     conn.commit()
     conn.close()
 
-# Функция для подключения к базе данных
+# Function to connect to the database
 def connect_db():
     return sqlite3.connect('database.db')
 
-# Функция для получения подключения к базе данных
+# Function to get a connection to the database
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
@@ -105,7 +117,7 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-# Закрытие подключения к базе данных
+# Close the database connection
 @app.teardown_appcontext
 def close_connection(exception):
     db = getattr(g, '_database', None)
@@ -124,7 +136,7 @@ def register():
         conn = get_db()
         cursor = conn.cursor()
 
-        # Проверяем, существует ли уже пользователь с таким email
+        # Check if the user already exists
         cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
         existing_user = cursor.fetchone()
 
@@ -132,17 +144,16 @@ def register():
             conn.close()
             return jsonify({'error': 'User already exists!'}), 409
         
-        # Хэшируем пароль перед сохранением
+        # Hash the password before saving
         hashed_password = generate_password_hash(password)
 
-        #Вставляем нового пользователя в базу данных с зашифрованным паролем
+        # Insert the new user into the database with the hashed password
         cursor.execute('INSERT INTO users (full_name, email, password, interests) VALUES (?, ?, ?, ?)',
-                        (full_name, email, hashed_password, interests))
+                       (full_name, email, hashed_password, interests))
         conn.commit()
         return jsonify({'message': 'User registered successfully!'}), 201
     except sqlite3.IntegrityError:
         return jsonify({'error': 'Database error occurred!'}), 500
-
 
 # API for user login
 @app.route('/login', methods=['POST'])
@@ -151,60 +162,86 @@ def login():
     email = data.get('email')
     password = data.get('password')
 
-
     if not email or not password:
         return jsonify({"message": "Email and password are required!"}), 400
 
     conn = connect_db()
-
     cursor = conn.cursor()
 
-    # Проверяем, существует ли пользователь с таким email
     cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
     user = cursor.fetchone()
     if not user:
         conn.close()
         return jsonify({"message": "User not found!"}), 404
 
-    # Проверяем хэшированный пароль
-    stored_password = user[3]  
+    stored_password = user[3]
     if not check_password_hash(stored_password, password):
         conn.close()
         return jsonify({"message": "Incorrect password!"}), 401
+
+    # Create JWT token
+    token = jwt.encode({'user_id': user[0], 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},
+                       app.config['JWT_SECRET_KEY'], algorithm='HS256')
+
+    # Store session in the sessions table
+    session_id = generate_uuid()
+    created_at = datetime.datetime.utcnow()
+    expires_at = created_at + datetime.timedelta(minutes=30)
     
-    # Set session data
-    session['user_id'] = user[0]  # Store user_id in session
-    session['logged_in'] = True
-    session.permanent = True  # Make session permanent (expires as per config)
+    cursor.execute('INSERT INTO sessions (session_id, user_id, created_at, expires_at) VALUES (?, ?, ?, ?)',
+                   (session_id, user[0], created_at, expires_at))
+    conn.commit()
 
     conn.close()
-    return jsonify({"message": "Login successful!"}), 200
+    return jsonify({"token": token, "session_id": session_id}), 200
 
 # User logout, which clears the session
 @app.route('/logout', methods=['POST'])
 def logout():
-    session.clear()  # Clear all session data
+    session_id = request.json.get('session_id')  # Получаем session_id из запроса
+    if not session_id:
+        return jsonify({"message": "Session ID is required!"}), 400
+
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    # Удаляем сессию из таблицы sessions
+    cursor.execute('DELETE FROM sessions WHERE session_id = ?', (session_id,))
+    conn.commit()
+    conn.close()
+
+    session.clear()  # Очищаем все данные сессии
     return jsonify({"message": "Logout successful!"}), 200
 
 # Protect a route with login required
 @app.route('/protected', methods=['GET'])
 def protected():
-    if not session.get('logged_in'):
-        return jsonify({"message": "Unauthorized access, please login!"}), 401
-    return jsonify({"message": "This is a protected route accessible only to logged-in users."})
+    token = request.headers.get('Authorization')
+    if not token:
+        return jsonify({"message": "Token is missing!"}), 401
+    
+    try:
+        token = token.split(" ")[1]  # Split "Bearer token"
+        decoded = jwt.decode(token, app.config['JWT_SECRET_KEY'], algorithms=['HS256'])
+        user_id = decoded['user_id']  # Get user ID from token
+    except jwt.ExpiredSignatureError:
+        return jsonify({"message": "Token has expired!"}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({"message": "Invalid token!"}), 401
 
+    return jsonify({"message": "This is a protected route accessible only to logged-in users.", "user_id": user_id})
 
 @app.route('/users', methods=['GET'])
 def get_users():
     conn = connect_db()
     cursor = conn.cursor()
 
-    # Получаем всех пользователей
+    # Get all users
     cursor.execute('SELECT * FROM users')
     users = cursor.fetchall()
     conn.close()
 
-    # Возвращаем список пользователей в формате JSON
+    # Return list of users in JSON format
     return jsonify(users), 200
 
 @app.route('/users/<string:user_id>', methods=['PUT'])
@@ -214,12 +251,12 @@ def update_user(user_id):
     email = data.get('email')
 
     if not full_name or not email:
-        return jsonify({"message": "All fields are required!"}), 400
+        return jsonify({"message": "Full name and email are required!"}), 400
 
     conn = connect_db()
     cursor = conn.cursor()
 
-    # Обновляем информацию о пользователе по UUID
+    # Update user in the database
     cursor.execute('UPDATE users SET full_name = ?, email = ? WHERE user_id = ?',
                    (full_name, email, user_id))
     conn.commit()
@@ -227,163 +264,6 @@ def update_user(user_id):
 
     return jsonify({"message": "User updated successfully!"}), 200
 
-@app.route('/users/<string:user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    conn = connect_db()
-    cursor = conn.cursor()
-
-    # Удаляем пользователя по ID
-    cursor.execute('DELETE FROM users WHERE user_id = ?', (user_id,))
-    conn.commit()
-    conn.close()
-
-    return jsonify({"message": "User deleted successfully!"}), 200
-
-
-
-# Создание нового проекта
-@app.route('/create_project', methods=['POST'])
-def create_project():
-    data = request.json
-    topic = data.get('topic')
-    brief_description = data.get('brief_description')
-    keywords = data.get('keywords')
-    image_url = data.get('image_url')
-
-    conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute('INSERT INTO projects (topic, brief_description, keywords, image_url) VALUES (?, ?, ?, ?)',
-                   (topic, brief_description, keywords, image_url))
-    conn.commit()
-    return jsonify({'message': 'Project created successfully!'}), 201
-
-# Эндпоинт для добавления проекта в избранное
-@app.route('/add_fav', methods=['POST'])
-def add_fav():
-    project_id = request.json.get('project_id')
-    if not project_id:
-        return jsonify({"error": "Project ID is required"}), 400
-
-
-    conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM projects WHERE project_id = ?', (project_id,))
-    project = cursor.fetchone()
-
-    if project:
-
-        user_id = session.get('user_id')  # Получаем user_id из сессии
-        if not user_id:
-            return jsonify({"error": "User is not logged in"}), 401
-
-        cursor.execute('INSERT INTO favorites (user_id, project_id) VALUES (?, ?)', (user_id, project_id))
-        conn.commit()
-        return jsonify({"message": "Project added to favorites"}), 200
-    else:
-        return jsonify({"error": "Project not found"}), 404
-
-
-@app.route('/api/data', methods=['GET'])
-def get_data():
-    return jsonify({'message': 'Hello from the backend!'})
-
-
-@app.route('/', methods=['GET'])
-def home():
-    return jsonify({'message': 'Welcome to the Flask API!'})
-
-
-#Рут для просмотра профиля статьи
-@app.route('/project_profile/<int:project_id>', methods=['GET'])
-def get_project_profile(project_id):
-    # Если проект не найден, выводим сообщение
-    conn = connect_db()
-    cursor = conn.cursor()
-
-    # Выполняем запрос для получения проекта по его ID
-    cursor.execute('SELECT * FROM projects WHERE project_id = ?', (project_id,))
-    project = cursor.fetchone()
-
-    conn.close()
-
-    # Если проект не найден
-    if project is None:
-        return jsonify({'message': 'ERROR: Project not found'}), 404
-
-    # Формируем данные проекта в виде словаря
-    project_data = {
-    'id': project[0],
-    'topic': project[1],
-    'brief_description': project[2],
-    'detailed_description': project[3],
-    'keywords': project[4],
-    'creation_project_date': project[5],
-    'image_url': project[6],
-    'user_id_ownership': project[7],
-    'email': project[8],
-    'phone': project[9],
-    'city_country': project[10],
-    'facebook_link': project[11],
-    'linkedin_link': project[12],
-    'twitter_link': project[13],
-    'instagram_link': project[14]
-}
-
-    return jsonify(project_data), 200
-
-
-def fill_db():
-    # Подключаемся к базе данных
-    conn = connect_db()
-    cursor = conn.cursor()
-
-    cursor.execute('DELETE FROM users')
-    cursor.execute('DELETE FROM projects')
-    cursor.execute('DELETE FROM vacancies')
-    cursor.execute('DELETE FROM keywords')
-
-    # Вставляем данные в таблицу keywords
-    keywords_data = [
-        ('Technology',),
-        ('Science',),
-        ('AI',),
-        ('Cybersecurity',)
-    ]
-    cursor.executemany('INSERT INTO keywords (title) VALUES (?)', keywords_data)
-
-    # Вставляем данные в таблицу users
-    users_data = [
-        ('John Doe', 'john.doe@example.com', 'password123', '2023-01-15 10:00:00', 1, 1, 1),
-        ('Jane Smith', 'jane.smith@example.com', 'password456', '2023-02-20 14:30:00', 2, 2, 2),
-        ('Alice Brown', 'alice.brown@example.com', 'password789', '2023-03-05 09:15:00', 3, 1, 2)
-    ]
-    cursor.executemany('INSERT INTO users (full_name, email, password, creation_account_date, interests, favorites_id, own_projects_id) VALUES (?, ?, ?, ?, ?, ?, ?)', users_data)
-
-    # Вставляем данные в таблицу projects
-    projects_data = [
-    (1, 'AI for Good', 'A project focused on using AI for social good.', 'Detailed description for AI for Good', 3, '2023-04-01 11:45:00', 'https://example.com/image1.jpg', 1, 'ai@example.com', '123-456-7890', 'New York, USA', 'https://facebook.com/ai', 'https://linkedin.com/ai', 'https://twitter.com/ai', 'https://instagram.com/ai'),
-    (2, 'Cybersecurity Innovations', 'New techniques to secure digital systems.', 'Detailed description for Cybersecurity Innovations', 4, '2023-05-10 16:00:00', 'https://example.com/image2.jpg', 2, 'security@example.com', '098-765-4321', 'London, UK', 'https://facebook.com/security', 'https://linkedin.com/security', 'https://twitter.com/security', 'https://instagram.com/security')
-    ]
-    cursor.executemany('INSERT INTO projects (project_id, topic, brief_description, detailed_description, keywords, creation_project_date, image_url, user_id_ownership, email, phone, city_country, facebook_link, linkedin_link, twitter_link, instagram_link) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', projects_data)
-
-    # Вставляем данные в таблицу vacancies
-    vacancies_data = [
-        (1, 'AI Engineer'),
-        (1, 'Data Scientist'),
-        (2, 'Cybersecurity Analyst'),
-        (2, 'Penetration Tester')
-    ]
-    cursor.executemany('INSERT INTO vacancies (project_id, vacancy_name) VALUES (?, ?)', vacancies_data)
-
-    # Сохраняем изменения и закрываем соединение
-    conn.commit()
-    conn.close()
-
-
-
-# Запуск всея всего
 if __name__ == '__main__':
-
     init_db()
-    fill_db()
-    app.run(debug=False)
+    app.run(debug=True)
