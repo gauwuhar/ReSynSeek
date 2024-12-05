@@ -34,6 +34,21 @@ export class ScientificInterestsPage implements OnInit {
     }));
   }
 
+  saveInterests() {
+    const selectedInterests = this.subjects
+      .filter(subject => subject.selected)
+      .map(subject => subject.id); // Получите ID выбранных интересов
+
+    this.userService.saveInterests(selectedInterests).subscribe(response => {
+      // Обработка ответа от сервера, например, уведомление об успехе
+      console.log('Interests saved successfully!', response);
+    }, error => {
+      // Обработка ошибок
+      console.error('Error saving interests', error);
+    });
+  }
+
+
   toggleSelected(subject: InnerSubjectModel) {
     subject.selected = !subject.selected;
   }

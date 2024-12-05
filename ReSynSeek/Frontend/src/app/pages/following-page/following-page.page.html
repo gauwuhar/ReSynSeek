@@ -1,105 +1,41 @@
 <body>
-    <main>
-        <h1 class="following__title" id="following_page_id">Following:</h1>
-        <div class="article__page">
-            <div class="article">
-                <div class="article__image">
-                    <a [routerLink]="['/project-profile-page']" fragment="project-profile_id">
-                        <img src="/assets/cyberguard.svg" alt="article image">
-                    </a>
-                </div>
-                <div class="article__content">
-                    <div class="article__content__header">
-                        <a [routerLink]="['/project-profile-page']" fragment="project-profile_id" >
-                            <h2 class="article__content__title">CyberGuard</h2>
-                        </a>
-                    </div>
-                    <p class="article__content__desciption">
-                        Lorem ipsum odor amet, consectetuer adipiscing elit. Nec commodo aliquet  cursus iaculis 
-                        tempus. Vestibulum praesent donec ligula diam volutpat  ultricies ipsum! Quisque euismod 
-                        sagittis primis tristique ullamcorper  bibendum felis penatibus feugiat. Placerat cras 
-                        praesent mollis.
-                    </p>
-                    <div class="article__content__footer">
-                        <div class="article__content__footer__tags">
-                            <a href="#"><span class="article__content__tag">Machine Learning</span></a>
-                            <a href="#"><span class="article__content__tag">Cybersecurity</span></a>
-                        </div>
-                        <div class="article__content__footer__button__div">
-                            <a [routerLink]="['/project-profile-page']" fragment="project-profile_id" class="article__content__footer__button">READ MORE</a>
-                            <a href="#" class="article__content__footer__button">UNFOLLOW</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    
-    
-            <div class="article">
-                <div class="article">
-                    <div class="article__image">
-                        <a [routerLink]="['/project-profile-page']" fragment="project-profile_id">
-                            <img src="/assets/minecraft.svg" alt="article image">
-                        </a>
-                    </div>
-                    <div class="article__content">
-                        <div class="article__content__header">
-                            <a [routerLink]="['/project-profile-page']" fragment="project-profile_id">
-                                <h2 class="article__content__title">Minecraft cheats download for free</h2>
-                            </a>
-                        </div>
-                        <p class="article__content__desciption">
-                            Lorem ipsum odor amet, consectetuer adipiscing elit. Nec commodo aliquet  cursus iaculis 
-                            tempus. Vestibulum praesent donec ligula diam volutpat  ultricies ipsum! Quisque euismod 
-                            sagittis primis tristique ullamcorper  bibendum felis penatibus feugiat. Placerat cras 
-                            praesent mollis.
-                        </p>
-                        <div class="article__content__footer">
-                            <div class="article__content__footer__tags">
-                                <a href="#"><span class="article__content__tag">Machine Learning</span></a>
-                                <a href="#"><span class="article__content__tag">Cybersecurity</span></a>
-                            </div>
-                            <div class="article__content__footer__button__div">
-                                <a [routerLink]="['/project-profile-page']" fragment="project-profile_id" class="article__content__footer__button">READ MORE</a>
-                                <a href="#" class="article__content__footer__button">UNFOLLOW</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-             <div class="article">
-                <div class="article">
-                    <div class="article__image">
-                        <a [routerLink]="['/project-profile-page']" fragment="project-profile_id">
-                            <img src="/assets/minecraft.svg" alt="article image">
-                        </a>
-                    </div>
-                    <div class="article__content">
-                        <div class="article__content__header">
-                            <a [routerLink]="['/project-profile-page']" fragment="project-profile_id">
-                                <h2 class="article__content__title">Minecraft cheats download for free</h2>
-                            </a>
-                        </div>
-                        <p class="article__content__desciption">
-                            Lorem ipsum odor amet, consectetuer adipiscing elit. Nec commodo aliquet  cursus iaculis 
-                            tempus. Vestibulum praesent donec ligula diam volutpat  ultricies ipsum! Quisque euismod 
-                            sagittis primis tristique ullamcorper  bibendum felis penatibus feugiat. Placerat cras 
-                            praesent mollis.
-                        </p>
-                        <div class="article__content__footer">
-                            <div class="article__content__footer__tags">
-                                <a href="#"><span class="article__content__tag">Machine Learning</span></a>
-                                <a href="#"><span class="article__content__tag">Cybersecurity</span></a>
-                            </div>
-                            <div class="article__content__footer__button__div">
-                                <a [routerLink]="['/project-profile-page']" fragment="project-profile_id" class="article__content__footer__button">READ MORE</a>
-                                <a href="#" class="article__content__footer__button">UNFOLLOW</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+  <main>
+      <h1 class="following__title" id="following_page_id">Following:</h1>
+      <div class="article__page">
+          <!-- Проверяем, есть ли любимые проекты -->
+          <div *ngIf="favorites.length > 0; else noFavorites">
+              <div *ngFor="let favorite of favorites" class="article">
+                  <div class="article__image">
+                      <a [routerLink]="['/project-profile-page']" fragment="{{ favorite.project_id }}">
+                          <img [src]="favorite.image_url" alt="{{ favorite.topic }} image">
+                      </a>
+                  </div>
+                  <div class="article__content">
+                      <div class="article__content__header">
+                          <a [routerLink]="['/project-profile-page']" fragment="{{ favorite.project_id }}">
+                              <h2 class="article__content__title">{{ favorite.topic }}</h2>
+                          </a>
+                      </div>
+                      <p class="article__content__description">
+                          {{ favorite.brief_description }}
+                      </p>
+                      <div class="article__content__footer">
+                          <div class="article__content__footer__tags">
+                              <span *ngFor="let keyword of favorite.keywords.split(', ')" href="#">
+                                  <span class="article__content__tag">{{ keyword }}</span>
+                              </span>
+                          </div>
+                          <div class="article__content__footer__button__div">
+                              <a [routerLink]="['/project-profile-page']" fragment="{{ favorite.project_id }}" class="article__content__footer__button">READ MORE</a>
+                              <a href="#" class="article__content__footer__button" (click)="removeFavorite(favorite.project_id)">UNFOLLOW</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <ng-template #noFavorites>
+              <p>No favorites found.</p>
+          </ng-template>
+      </div>
+  </main>
 </body>

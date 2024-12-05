@@ -22,14 +22,16 @@
         </div>
       </div> -->
       <div class="header__user-logo user-logo" #userMenuToggle (click)="toggleUserMenu()">
-        <span class="user-logo__icon"></span>
+        <a [routerLink]="['/profile-with-tabs-one']" fragment="profile-head_id">
+          <span class="user-logo__icon"></span>
+        </a>
         <div class="user-menu" #userMenu>
           <p class="user-menu__username">Babydont Hurtme</p>
           <a href="#" class="user-menu__item">
             <span class="user-menu__icon view-profile-icon"></span>
             View profile
           </a>
-          <a href="#" class="user-menu__item">
+          <a href="" class="user-menu__item">
             <span class="user-menu__icon signout-icon"></span>
             Log Out
           </a>

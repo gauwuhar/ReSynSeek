@@ -57,7 +57,7 @@
     deleteAllButtons(): void {
       // Get the container with buttons
       const buttonContainer = this.buttonContainer.nativeElement;
-  
+
       // Remove all buttons inside the container except the "Delete All" button
       buttonContainer.querySelectorAll('.creating-project__keywords-section__keyword-button').forEach((button: HTMLElement) => {
         button.remove();

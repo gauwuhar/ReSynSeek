@@ -1,13 +1,25 @@
 import { Injectable } from '@angular/core';
 import { SubjectModel } from "../model/subject-model";
 import { AboutMeModel } from "../model/about-me.model";
+import { HttpClient } from "@angular/common/http";
+import { BehaviorSubject, firstValueFrom, Observable } from "rxjs";
+import { AuthService } from '../auth.service';  // Обновите путь в зависимости от вашей структуры папок
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor() { }
+  private apiUrl = 'http://127.0.0.1:5000';
+  private currentSessionId: string | null = null;
+  private currentUserSubject = new BehaviorSubject<any>(null); // Здесь можно хранить информацию о текущем пользователе
+
+
+  constructor(private http: HttpClient,) {
+    const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    this.currentUserSubject.next(user);
+  }
 
   getScientificInterests(): SubjectModel[] {
     return [
@@ -103,6 +115,96 @@ export class UserService {
       },
     ];
   };
+
+
+  getCurrentUserId(): string | null {
+    const currentUser = this.currentUserSubject.value;
+    return currentUser ? currentUser.user_id : null; // Предполагается, что у пользователя есть поле user_id
+  }
+
+  saveInterests(interests: string[]): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/save_interests`, {
+      user_id: this.getCurrentUserId(), // Теперь этот метод существует
+      interests: interests,
+    });
+  }
+
+
+  getHelloWorld() {
+    return firstValueFrom(this.http.get("${this.apiUrl}/api/data"))
+  }
+
+  async registerUser(user: { fullName: string, email: string, password: string }) {
+    try {
+      const response = await firstValueFrom(this.http.post(`${this.apiUrl}/register`, user));
+      return response; // Return response for further use if needed
+    } catch (error) {
+      console.error("Registration failed:", error);
+      throw error; // Rethrow the error to handle it in the component
+    }
+  }
+
+  async login(email: string, password: string) {
+    const loginData = { email, password };
+    try {
+      const response = await firstValueFrom(this.http.post<{ sessionId: string }>(`${this.apiUrl}/login`, loginData));
+      this.setSessionId(response.sessionId); // Установка ID сессии после успешного входа
+      return response; // Вернуть ответ для дальнейшего использования, если необходимо
+    } catch (error) {
+      console.error("Login failed:", error);
+      throw error; // Повторное выбрасывание ошибки для обработки в компоненте
+    }
+  }
+
+  setSessionId(sessionId: string) {
+    localStorage.setItem('sessionId', sessionId); // Сохранение sessionId в локальном хранилище
+    console.log('Session ID saved:', sessionId); // Логирование сохраненного sessionId
+  }
+
+
+  getSessionId(): string | null {
+    return this.currentSessionId;
+  }
+
+  async logout(sessionId: string) {
+    const logoutData = { session_id: sessionId };
+    console.log('Sending logout data:', logoutData); // Логирование данных для отправки
+    try {
+      const response = await firstValueFrom(this.http.post(`${this.apiUrl}/logout`, logoutData));
+      return response; // Вернуть ответ для дальнейшего использования, если необходимо
+    } catch (error) {
+      console.error("Logout failed:", error);
+      throw error; // Повторно выбросить ошибку для обработки в компоненте
+    }
+  }
+
+
+  checkAuth(): Observable<AuthService> {
+    return this.http.get<AuthService>(`${this.apiUrl}/api/check_auth`);
+  }
+
+  async getUserProfile(userId: string): Promise<{ full_name: string; email: string }> {
+    try {
+      const response = await firstValueFrom(
+        this.http.get<{full_name: string; email: string}>(`${this.apiUrl}/profile/${userId}`)
+      );
+      return response; // Вернуть данные профиля
+    } catch (error) {
+      console.error("Failed to fetch user profile:", error); // Логировать ошибку
+      throw error; // Повторно выбросить ошибку для обработки в компоненте
+    }
+  }
+
+  getFavorites(userId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/profile-favorites/${userId}`); // Передаем userId в URL
+  }
+
+  deleteFavorite(projectId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/profile-favorites/delete/${projectId}`);
+  }
+
+
+
 
   getAboutMe(): AboutMeModel {
     return {

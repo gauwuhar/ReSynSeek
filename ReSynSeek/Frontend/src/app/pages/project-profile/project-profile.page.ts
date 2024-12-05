@@ -13,10 +13,7 @@ export class ProjectProfileComponent {
   // Тексты для смены на кнопке
   originalButtonText = 'Contact Us';
   contactInfo = `
-    verycleverscientist667@gmail.com
-    +8 800 555 35 35
-    Los Santos, England, America
-    t.me/sheisnotmylove
+    instagram.com/khegay.vv
   `;
 
   // Переменная для отслеживания состояния

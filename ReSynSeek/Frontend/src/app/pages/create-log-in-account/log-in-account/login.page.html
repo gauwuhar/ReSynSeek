@@ -8,21 +8,20 @@
       </div>
 
       <div class="login__form-wrapper">
-        <form action="" class="login__form">
-
+        <form action="" class="login__form" (submit)="handleLogin($event)">
           <div class="login__fields">
             <div class="login__fields-div">
               <label for="email" class="login__label">
                 E-mail or phone number
               </label>
-              <input id="email" class="login__input" type="email" required placeholder="Type your e-mail or phone number">
+              <input id="email" class="login__input" type="email" required placeholder="Type your e-mail or phone number" [(ngModel)]="email" name="email">
             </div>
 
             <div class="login__fields-div">
               <label for="password" class="login__label">
                 Password
               </label>
-              <input id="password" class="login__input" type="password" required placeholder="Type your password">
+              <input id="password" class="login__input" type="password" required placeholder="Type your password" [(ngModel)]="password" name="password">
               <div class="login__forgot-password">
                 <a href="" class="login__forgot-password-link">Forgot Password?</a>
               </div>
@@ -30,9 +29,10 @@
           </div>
 
           <div class="login__actions">
-            <button class="login__submit-button" type="submit" value="Log In" [routerLink]="['/projects-feed-page']">Log In</button>
+            <button class="login__submit-button" type="submit">Log In</button>
           </div>
         </form>
+
       </div>
 
       <div class="login__signup">

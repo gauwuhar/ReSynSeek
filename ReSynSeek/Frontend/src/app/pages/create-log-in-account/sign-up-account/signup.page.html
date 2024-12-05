@@ -8,59 +8,112 @@
     </div>
 
     <div class="signup__form-wrapper">
-      <form action="" class="signup__form">
-
+      <form (ngSubmit)="registerUser()" class="signup__form" #registerForm="ngForm">
         <div class="signup__fields">
-          <div class="signup__fields-div">
-            <label for="name" class="signup__label">
-              Full name
-            </label>
-            <input id="name" class="signup__input" type="name" required placeholder="Name Surname">
-          </div>
 
           <div class="signup__fields-div">
-            <label for="email" class="signup__label">
-              E-mail or phone number
-            </label>
-            <input id="email" class="signup__input" type="email" required placeholder="Type your e-mail or phone number">
-          </div>
-
-          <div class="signup__fields-div">
-            <label for="password" class="signup__label">
-              Password
-            </label>
-            <input id="password" class="signup__input" type="password" required placeholder="Type your password">
-            <div class="signup__password-length">
-              <span class="signup__password-length-span">Must be 8 characters at least</span>
+            <label for="fullName" class="signup__label">Full name</label>
+            <input
+              id="fullName"
+              class="signup__input"
+              type="text"
+              required
+              placeholder="Name Surname"
+              [(ngModel)]="fullName"
+              name="fullName"
+              #fullNameInput="ngModel">
+            <div *ngIf="fullNameInput.invalid && fullNameInput.touched" class="error">
+              Full name is required.
             </div>
           </div>
 
           <div class="signup__fields-div">
-            <label for="password" class="signup__label">
-              Confirm Password
-            </label>
-            <input id="password" class="signup__input" type="password" required placeholder="Repeat your password">
+            <label for="email" class="signup__label">E-mail or phone number</label>
+            <input
+              id="email"
+              class="signup__input"
+              type="email"
+              required
+              placeholder="Type your e-mail or phone number"
+              [(ngModel)]="email"
+              name="email"
+              #emailInput="ngModel">
+            <div *ngIf="emailInput.invalid && emailInput.touched" class="error">
+              A valid email is required.
+            </div>
           </div>
 
+          <div class="signup__fields-div">
+            <label for="password" class="signup__label">Password</label>
+            <input
+              id="password"
+              class="signup__input"
+              type="password"
+              required
+              placeholder="Type your password"
+              [(ngModel)]="password"
+              name="password"
+              #passwordInput="ngModel">
+            <div class="signup__password-length">
+              <span class="signup__password-length-span">Must be 8 characters at least</span>
+            </div>
+            <div *ngIf="passwordInput.invalid && passwordInput.touched" class="error">
+              Password is required.
+            </div>
+          </div>
+
+          <div class="signup__fields-div">
+            <label for="confirmPassword" class="signup__label">Confirm Password</label>
+            <input
+              id="confirmPassword"
+              class="signup__input"
+              type="password"
+              required
+              placeholder="Repeat your password"
+              [(ngModel)]="confirmPassword"
+              name="confirmPassword"
+              #confirmPasswordInput="ngModel">
+            <div *ngIf="confirmPasswordInput.invalid && confirmPasswordInput.touched" class="error">
+              Confirmation password is required.
+            </div>
+            <div *ngIf="password !== confirmPassword && confirmPasswordInput.touched" class="error">
+              Passwords do not match.
+            </div>
+          </div>
 
           <div class="signup__checkbox-block">
             <label for="agreement" class="signup__agreement-text">
-              <input id="agreement" type="checkbox" class="signup__agreement-checkbox" name="agreement with policy" required value="agree">
-              <span>By creating an account means you agree to <a class="signup__agreement-link" href="">Terms and Conditions</a>, and our <a class="signup__agreement-link"  href="">Privacy Policy</a></span>
+              <input
+                id="agreement"
+                type="checkbox"
+                class="signup__agreement-checkbox"
+                [(ngModel)]="agreeToTerms"
+                name="agreeToTerms"
+                required
+                #agreeToTermsInput="ngModel">
+              <span>By creating an account, you agree to
+                <a class="signup__agreement-link" href="">Terms and Conditions</a> and our
+                <a class="signup__agreement-link" href="">Privacy Policy</a>
+              </span>
             </label>
+            <div *ngIf="agreeToTermsInput.invalid && agreeToTermsInput.touched" class="error">
+              You must agree to the terms.
+            </div>
           </div>
-
         </div>
-
-
 
         <div class="signup__actions">
-          <button class="signup__submit-button" type="submit" value="Sign Up" [routerLink]="['/projects-feed-page']">Sign Up</button>
+          <button
+            class="signup__submit-button"
+            type="submit"
+            [disabled]="!registerForm.valid || password !== confirmPassword">
+            Sign Up
+          </button>
         </div>
-
       </form>
-    </div>
 
+
+    </div>
     <div class="signup__signin">
       <span class="signup__signin-text">
         Aldready have an account?

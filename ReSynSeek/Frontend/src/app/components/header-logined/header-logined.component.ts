@@ -1,5 +1,6 @@
-import { Component, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { Component, ElementRef, ViewChild, HostListener, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-header-logined',
@@ -8,7 +9,22 @@ import { RouterModule } from '@angular/router';
   templateUrl: './header-logined.component.html',
   styleUrls: ['./header-logined.component.sass']
 })
-export class HeaderLoginedComponent {
+export class HeaderLoginedComponent implements OnInit {
+  loggedIn: boolean = false;
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.authService.checkAuth().subscribe({
+      next: (response: any) => { // Используем тип any
+        this.loggedIn = response.logged_in; // Устанавливаем значение loggedIn на основе ответа
+      },
+      error: (error) => {
+        console.error('Error checking authentication:', error); // Логируем ошибку
+        this.loggedIn = false; // Устанавливаем loggedIn в false при ошибке
+      }
+    });
+  }
 
   @ViewChild('userMenuToggle', { static: true }) userMenuToggle!: ElementRef;
   @ViewChild('userMenu', { static: true }) userMenu!: ElementRef;
